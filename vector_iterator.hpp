@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 16:04:34 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/07/30 17:28:30 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/07/30 20:10:11 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,19 @@ namespace ft
 
 using std::random_access_iterator_tag;
 
-template<typename T>
-VectorIterator<T>	operator+(int n, const VectorIterator<T> &right);
+template<bool B, typename T1, typename T2>
+struct conditional
+{ // if flag is false
+	typedef T2 type;
+};
 
-template<typename T>
+template<typename T1, typename T2>
+struct conditional<true, T1, T2>
+{ // if flag is true specialization
+	typedef T1 type;
+};
+
+template<typename T, bool IsConst = false>
 class VectorIterator
 {
 	public:
@@ -32,6 +41,7 @@ class VectorIterator
 		typedef T&							reference;
 		typedef random_access_iterator_tag	iterator_category;
 		typedef std::ptrdiff_t				differrence_type;
+		typedef typename conditional<IsConst, T*, const T*>::type	conditional_t;
 
 		VectorIterator(T *pointer);
 		VectorIterator(const VectorIterator &source);
@@ -39,8 +49,8 @@ class VectorIterator
 		VectorIterator		&operator=(const VectorIterator &source);
 		bool				operator==(const VectorIterator &right) const;
 		bool				operator!=(const VectorIterator &right) const;
-		T					&operator*();
-		T					*operator->();
+		conditional_t		&operator*();
+		conditional_t		*operator->();
 		VectorIterator		&operator++();
 		VectorIterator		operator++(int);
 		VectorIterator		&operator--();
@@ -54,153 +64,174 @@ class VectorIterator
 		bool				operator>=(const VectorIterator &right) const;
 		VectorIterator		&operator+=(int value);
 		VectorIterator		&operator-=(int value);
-		T					&operator[](int index);
+		conditional_t		&operator[](int index);
 	private:
-		T	*_pointer;
+		conditional_t	_pointer;
 };
 
-template<typename T>
-VectorIterator<T>::VectorIterator(T* pointer) 
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>::
+VectorIterator(T* pointer)
 {
 	_pointer = pointer;
 }
 
-template<typename T>
-VectorIterator<T>::VectorIterator(const VectorIterator &source)
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>::
+VectorIterator(const VectorIterator &source)
 {
 	*this = source;
 }
 
-template<typename T>
-VectorIterator<T>	&VectorIterator<T>::operator=(const VectorIterator &source)
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>	&VectorIterator<T, IsConst>::
+operator=(const VectorIterator &source)
 {
 	_pointer = source._pointer;
 	return *this;
 }
 
-template<typename T>
-bool	VectorIterator<T>::operator==(const VectorIterator &right) const
+template<typename T, bool IsConst>
+bool	VectorIterator<T, IsConst>::
+operator==(const VectorIterator &right) const
 {
 	return _pointer == right._pointer;
 }
 
-template<typename T>
-bool	VectorIterator<T>::operator!=(const VectorIterator &rigth) const
+template<typename T, bool IsConst>
+bool	VectorIterator<T, IsConst>::
+operator!=(const VectorIterator &rigth) const
 {
 	return _pointer != rigth._pointer;
 }
 
-template<typename T>
-T		&VectorIterator<T>::operator*()
+template<typename T, bool IsConst>
+typename VectorIterator<T, IsConst>::conditional_t	&VectorIterator<T, IsConst>::
+operator*()
 {
 	return *_pointer;
 }
 
-template<typename T>
-T		*VectorIterator<T>::operator->()
+template<typename T, bool IsConst>
+typename VectorIterator<T, IsConst>::conditional_t	*VectorIterator<T, IsConst>::
+operator->()
 {
 	return _pointer;
 }
 
-template<typename T>
-VectorIterator<T>	&VectorIterator<T>::operator++()
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>	&VectorIterator<T, IsConst>::
+operator++()
 {
 	_pointer++;
 	return *this;
 }
 
-template<typename T>
-VectorIterator<T>	VectorIterator<T>::operator++(int)
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>	VectorIterator<T, IsConst>::
+operator++(int)
 {
-	VectorIterator<T>	temp_it = *this;
+	VectorIterator<T, IsConst>	temp_it = *this;
 
 	_pointer++;
 	return temp_it;
 }
 
-template<typename T>
-VectorIterator<T>	&VectorIterator<T>::operator--()
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>	&VectorIterator<T, IsConst>::
+operator--()
 {
 	_pointer--;
 	return *this;
 }
 
-template<typename T>
-VectorIterator<T>	VectorIterator<T>::operator--(int)
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>	VectorIterator<T, IsConst>::
+operator--(int)
 {
-	VectorIterator<T>	temp_it = *this;
+	VectorIterator<T, IsConst>	temp_it = *this;
 
 	_pointer--;
 	return temp_it;
 }
 
-template<typename T>
-VectorIterator<T>	VectorIterator<T>::operator+(int rigth) const
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>	VectorIterator<T, IsConst>::
+operator+(int rigth) const
 {
 	return _pointer + rigth;
 	// here default constructor (VectorIterator(T* pointer) will be called)
 }
 
-template<typename T>
-VectorIterator<T>	VectorIterator<T>::operator-(int rigth) const
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>	VectorIterator<T, IsConst>::
+operator-(int rigth) const
 {
 	return _pointer - rigth;
 	// here default constructor (VectorIterator(T* pointer) will be called)
 }
 
-template<typename T>
-VectorIterator<T>::differrence_type
-					VectorIterator<T>::operator-(const VectorIterator &rigth) const
+template<typename T, bool IsConst>
+typename VectorIterator<T, IsConst>::differrence_type VectorIterator<T, IsConst>::
+operator-(const VectorIterator &rigth) const
 {
 	return _pointer - rigth._pointer;
 }
 
-template<typename T>
-bool				VectorIterator<T>::operator<(const VectorIterator &rigth) const
+template<typename T, bool IsConst>
+bool				VectorIterator<T, IsConst>::
+operator<(const VectorIterator &rigth) const
 {
 	return _pointer < rigth._pointer;
 }
 
-template<typename T>
-bool				VectorIterator<T>::operator>(const VectorIterator &rigth) const
+template<typename T, bool IsConst>
+bool				VectorIterator<T, IsConst>::
+operator>(const VectorIterator &rigth) const
 {
 	return _pointer > rigth._pointer;
 }
 
-template<typename T>
-bool				VectorIterator<T>::operator<=(const VectorIterator &rigth) const
+template<typename T, bool IsConst>
+bool				VectorIterator<T, IsConst>::
+operator<=(const VectorIterator &rigth) const
 {
 	return _pointer <= rigth._pointer;
 }
 
-template<typename T>
-bool				VectorIterator<T>::operator>=(const VectorIterator &rigth) const
+template<typename T, bool IsConst>
+bool				VectorIterator<T, IsConst>::
+operator>=(const VectorIterator &rigth) const
 {
 	return _pointer >= rigth._pointer;
 }
 
-template<typename T>
-VectorIterator<T>	&VectorIterator<T>::operator+=(int value)
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>	&VectorIterator<T, IsConst>::
+operator+=(int value)
 {
 	_pointer += value;
 	return *this;
 }
 
-template<typename T>
-VectorIterator<T>	&VectorIterator<T>::operator-=(int value)
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>	&VectorIterator<T, IsConst>::
+operator-=(int value)
 {
 	_pointer -= value;
 	return *this;
 }
 
-template<typename T>
-T					&VectorIterator<T>::operator[](int index)
+template<typename T, bool IsConst>
+typename VectorIterator<T, IsConst>::conditional_t	&VectorIterator<T, IsConst>::
+operator[](int index)
 {
 	return _pointer[index];
 }
 
-template<typename T>
-VectorIterator<T>	operator+(int n, const VectorIterator<T> &right) // non-memer operator+
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>
+operator+(int n, const VectorIterator<T, IsConst> &right) // non-memer operator+
 {
 	return right + n;
 	// here default constructor (VectorIterator(T* pointer) will be called)

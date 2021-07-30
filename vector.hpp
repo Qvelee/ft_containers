@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:37:15 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/07/30 16:11:05 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/07/30 19:38:45 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,18 @@ template<typename T, class Allocator = std::allocator<T> >
 class vector
 {
 	public:
-		typedef T value_type;
-		typedef Allocator allocator_type;
-		typedef T& reference;
-		typedef T* pointer;
-		typedef const T& const_reference;
-		typedef const T* const_pointer;
-		typedef ft::VectorIterator<value_type> iterator;
-		typedef iterator const_iterator; // TODO change!!!!!
-		typedef iterator reverse_iterator;
-		typedef iterator const_reverse_iterator;
+		typedef T										value_type;
+		typedef Allocator								allocator_type;
+		typedef T&										reference;
+		typedef T*										pointer;
+		typedef const T&								const_reference;
+		typedef const T*								const_pointer;
+		typedef ft::VectorIterator<value_type>			iterator;
+		typedef ft::VectorIterator<value_type, true>	const_iterator;
+		typedef iterator								reverse_iterator;
+		typedef iterator								const_reverse_iterator;
 		typedef	difference_type;
-		typedef size_t size_type;
+		typedef size_t									size_type;
 
 		explicit vector(const allocator_type &alloc = allocator_type()); // default
 		explicit vector(size_t size, const value_type &value = value_type(),\
