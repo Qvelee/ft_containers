@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:37:15 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/07/29 17:18:08 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/07/30 16:11:05 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,29 @@
 
 namespace ft
 {
+	
 template <typename T, typename Allocator>
 void swap (vector<T, Allocator> &first, vector<T, Allocator> &second);
 
-template <class T, class Allocator>
+template <typename T, class Allocator>
 bool operator==(const vector<T, Allocator> &left, const vector<T, Allocator> &right);
 
-template <class T, class Allocator>
+template <typename T, class Allocator>
 bool operator!=(const vector<T, Allocator> &left, const vector<T, Allocator> &right);
 
-template <class T, class Allocator>
+template <typename T, class Allocator>
 bool operator<(const vector<T, Allocator> &left, const vector<T, Allocator> &right);
 
-template <class T, class Allocator>
+template <typename T, class Allocator>
 bool operator<=(const vector<T, Allocator> &left, const vector<T, Allocator> &right);
 
-template <class T, class Allocator>
+template <typename T, class Allocator>
 bool operator>(const vector<T, Allocator> &left, const vector<T, Allocator> &right);
 
-template <class T, class Allocator>
+template <typename T, class Allocator>
 bool operator>=(const vector<T, Allocator> &left, const vector<T, Allocator> &right);
 
-template<class T, class Allocator = std::allocator<T> >
+template<typename T, class Allocator = std::allocator<T> >
 class vector
 {
 	public:
@@ -56,7 +57,7 @@ class vector
 		typedef iterator const_iterator; // TODO change!!!!!
 		typedef iterator reverse_iterator;
 		typedef iterator const_reverse_iterator;
-		typedef  difference_type;
+		typedef	difference_type;
 		typedef size_t size_type;
 
 		explicit vector(const allocator_type &alloc = allocator_type()); // default
@@ -112,6 +113,7 @@ class vector
 		size_type		_capacity;
 		allocator_type	_allocator;
 };
+
 }
 
 #endif

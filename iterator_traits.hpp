@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 16:17:52 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/07/29 16:50:17 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/07/30 12:21:57 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ struct iterator_traits<const T*>
 	typedef const T&					reference;
 	typedef random_access_iterator_tag	iterator_category;
 };
+
 }
 
 #endif
