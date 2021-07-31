@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:37:15 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/07/31 18:08:10 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/07/31 21:02:48 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <cstdlib>
 # include <memory>
-
+# include <limits>
 # include "vector_iterator.hpp"
 # include "iterator_traits.hpp"
 # include "reverse_iterator.hpp"
@@ -75,11 +75,11 @@ class vector
 		const_reference			back() const;
 		template <typename InputIterator>
 		void					assign(InputIterator first, InputIterator last);
-		void					assign(size_type n, const value_type& value);
-		void					push_back(const value_type& value);
+		void					assign(size_type n, const value_type &value);
+		void					push_back(const value_type &value);
 		void					pop_back();
-		iterator				insert(iterator position, const value_type& value);
-		void					insert(iterator position, size_type n, const value_type& value);
+		iterator				insert(iterator position, const value_type &value);
+		void					insert(iterator position, size_type n, const value_type &value);
 		template<typename InputIterator>
 		void					insert(iterator position, InputIterator first, InputIterator last);
 		iterator				erase(iterator position);
@@ -212,28 +212,250 @@ rend() const
 	return const_reverse_iterator(begin());
 }
 
+template<typename T, typename Allocator>
+typename vector<T, Allocator>::size_type	vector<T, Allocator>::
+size() const
+{
+	return _size;
+}
 
 template<typename T, typename Allocator>
-void swap(vector<T, Allocator> &first, vector<T, Allocator> &second);
-
-template<typename T, class Allocator>
-bool operator==(const vector<T, Allocator> &left, const vector<T, Allocator> &right);
-
-template<typename T, class Allocator>
-bool operator!=(const vector<T, Allocator> &left, const vector<T, Allocator> &right);
-
-template<typename T, class Allocator>
-bool operator<(const vector<T, Allocator> &left, const vector<T, Allocator> &right);
-
-template<typename T, class Allocator>
-bool operator<=(const vector<T, Allocator> &left, const vector<T, Allocator> &right);
-
-template<typename T, class Allocator>
-bool operator>(const vector<T, Allocator> &left, const vector<T, Allocator> &right);
-
-template<typename T, class Allocator>
-bool operator>=(const vector<T, Allocator> &left, const vector<T, Allocator> &right);
-
+typename vector<T, Allocator>::size_type	vector<T, Allocator>::
+max_size() const
+{
+	return std::numeric_limits<difference_type>::max();
 }
+
+template<typename T, typename Allocator>
+void	vector<T, Allocator>::
+resize(size_type size, value_type value)
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+typename vector<T, Allocator>::size_type	vector<T, Allocator>::
+capacity() const
+{
+	return _capacity;
+}
+
+template<typename T, typename Allocator>
+bool	vector<T, Allocator>::
+empty() const
+{
+	return _size;
+}
+
+template<typename T, typename Allocator>
+void	vector<T, Allocator>::
+reserve(size_type size)
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+typename vector<T, Allocator>::reference	vector<T, Allocator>::
+at(size_type position)
+{
+	if (position > _size)
+		throw std::out_of_range("index is out of range");
+	return _array[position];
+}
+
+template<typename T, typename Allocator>
+typename vector<T, Allocator>::const_reference	vector<T, Allocator>::
+at(size_type position) const
+{
+	if (position > _size)
+		throw std::out_of_range("index is out of range");
+	return _array[position];
+}
+
+template<typename T, typename Allocator>
+typename vector<T, Allocator>::reference	vector<T, Allocator>::
+front()
+{
+	return _array[0];
+}
+
+template<typename T, typename Allocator>
+typename vector<T, Allocator>::const_reference	vector<T, Allocator>::
+front() const
+{
+	return _array[0];
+}
+
+template<typename T, typename Allocator>
+typename vector<T, Allocator>::reference	vector<T, Allocator>::
+back()
+{
+	return _array[_size - 1];
+}
+
+template<typename T, typename Allocator>
+typename vector<T, Allocator>::const_reference	vector<T, Allocator>::
+back() const
+{
+	return _array[_size - 1];
+}
+
+template<typename T, typename Allocator>
+template <typename InputIterator>
+void	vector<T, Allocator>::
+assign(InputIterator first, InputIterator last)
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+void	vector<T, Allocator>::
+assign(size_type n, const value_type &value)
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+void	vector<T, Allocator>::
+push_back(const value_type &value)
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+void	vector<T, Allocator>::
+pop_back()
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+typename vector<T, Allocator>::iterator	vector<T, Allocator>::
+insert(iterator position, const value_type &value)
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+void	vector<T, Allocator>::
+insert(iterator position, size_type n, const value_type &value)
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+template<typename InputIterator>
+void	vector<T, Allocator>::
+insert(iterator position, InputIterator first, InputIterator last)
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+typename vector<T, Allocator>::iterator	vector<T, Allocator>::
+erase(iterator position)
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+typename vector<T, Allocator>::iterator	vector<T, Allocator>::
+erase(iterator first, iterator last)
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+void	vector<T, Allocator>::
+swap(vector &source)
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+void	vector<T, Allocator>::
+clear()
+{
+	// TODO
+}
+
+template<typename T, typename Allocator>
+typename vector<T, Allocator>::allocator_type	vector<T, Allocator>::
+get_allocator() const
+{
+	return _allocator;
+}
+
+template<typename T, typename Allocator>
+void swap(vector<T, Allocator> &first, vector<T, Allocator> &second)
+{
+	// TODO
+}
+
+template<typename T, class Allocator>
+bool operator==(const vector<T, Allocator> &left, const vector<T, Allocator> &right)
+{
+	if (left.size() != right.size())
+		return false;
+	typename vector<T, Allocator>::const_iterator it_left = left.begin();
+	typename vector<T, Allocator>::const_iterator it_rigth = right.begin();
+	typename vector<T, Allocator>::const_iterator it_left_end = left.begin();
+	while (it_left != it_left_end)
+		if (*it_left++ != *it_rigth++)
+			return false;
+	return true;
+}
+
+template<typename T, class Allocator>
+bool operator!=(const vector<T, Allocator> &left, const vector<T, Allocator> &right)
+{
+	return !operator==(left, right);
+}
+
+template<typename InputIterator1, typename InputIterator2>
+bool	lexicographical_compare(InputIterator1 first_1, InputIterator1 last_1,
+	InputIterator2 first_2, InputIterator2 last_2)
+{
+	while (first_1 != last_1)
+	{
+		if (first_2 == last_2 || *first_1 > *first_2)
+			return false;
+		else if (*first_1 < *first_2)
+			return true;
+		++first_1;
+		++first_2;
+	}
+	return first_2 != last_2;
+}
+
+template<typename T, class Allocator>
+bool operator<(const vector<T, Allocator> &left, const vector<T, Allocator> &right)
+{
+	return lexicographical_compare(left.begin(), left.end(), right.begin(), right.end());
+}
+
+template<typename T, class Allocator>
+bool operator<=(const vector<T, Allocator> &left, const vector<T, Allocator> &right)
+{
+	if (operator==(left, right))
+		return true;
+	return lexicographical_compare(left.begin(), left.end(), right.begin(), right.end());
+}
+
+template<typename T, class Allocator>
+bool operator>(const vector<T, Allocator> &left, const vector<T, Allocator> &right)
+{
+	return !lexicographical_compare(left.begin(), left.end(), right.begin(), right.end());
+}
+
+template<typename T, class Allocator>
+bool operator>=(const vector<T, Allocator> &left, const vector<T, Allocator> &right)
+{
+	if (operator==(left, right))
+		return true;
+	return !lexicographical_compare(left.begin(), left.end(), right.begin(), right.end());
+}
+
+} // namespace ft
 
 #endif
