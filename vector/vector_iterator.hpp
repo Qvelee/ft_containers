@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 16:04:34 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/07/31 18:07:56 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/01 17:22:38 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ template<typename T, bool IsConst>
 VectorIterator<T, IsConst>	&VectorIterator<T, IsConst>::
 operator--()
 {
-	++_pointer;
+	--_pointer;
 	return *this;
 }
 
@@ -156,7 +156,7 @@ operator--(int)
 {
 	VectorIterator<T, IsConst>	temp_it = *this;
 
-	++_pointer;
+	--_pointer;
 	return temp_it;
 }
 
