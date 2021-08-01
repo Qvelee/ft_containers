@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:37:15 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/01 18:07:11 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/01 20:24:41 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ class vector
 		void					push_back(const value_type &value);
 		void					pop_back();
 		iterator				insert(iterator position, const value_type &value);
-		void					insert(iterator position, size_type n, const value_type &value);
+		void					insert(iterator position, size_type quantity,
+			const value_type &value);
 		template<typename InputIterator>
 		void					insert(iterator position, InputIterator first, InputIterator last);
 		iterator				erase(iterator position);
@@ -410,15 +411,26 @@ insert(iterator position, const value_type &value)
 		_allocator.construct(&(*it), *(it - 1));
 		_allocator.destroy(&(*(it - 1)));
 	}
-	*position = value;
+	_allocator.construct(&(*position), value);
 	return position;
 }
 
 template<typename T, typename Allocator>
 void	vector<T, Allocator>::
-insert(iterator position, size_type n, const value_type &value)
+insert(iterator position, size_type quantity, const value_type &value)
 {
-	// TODO
+	difference_type	pos_index = position - begin();
+	reserve(_size + quantity);
+	_size += quantity;
+	position = iterator(begin() + pos_index);
+	iterator it = end() - 1;
+	for (; it >= position + quantity; --it)
+	{
+		_allocator.construct(&(*it), *(it - quantity));
+		_allocator.destroy(&(*(it - quantity)));
+	}
+	for (; it >= position; --it)
+		_allocator.construct(&(*it), value);
 }
 
 template<typename T, typename Allocator>

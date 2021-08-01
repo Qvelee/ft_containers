@@ -2,6 +2,7 @@
 # include <string>
 # include <iostream>
 # include <vector>
+# include <cstdlib>
 
 using std::string;
 using std::cout;
@@ -12,9 +13,9 @@ int		main(void)
 {
 	vector<int>	vec;
 
-	vec.push_back(1);
 	vec.push_back(3);
-	vec.insert(vec.begin() + 1, 5);
+	vec.push_back(10);
+	vec.insert(vec.begin(), (size_t)3, 5);
 	cout << "vector: ";
 	for (vector<int>::iterator it = vec.begin(); it < vec.end(); ++it)
 		cout << *it << ' ';
