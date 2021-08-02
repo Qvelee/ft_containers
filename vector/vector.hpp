@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:37:15 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/01 20:33:39 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/02 11:28:26 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -461,14 +461,34 @@ template<typename T, typename Allocator>
 typename vector<T, Allocator>::iterator	vector<T, Allocator>::
 erase(iterator position)
 {
-	// TODO
+	iterator	it_end = end() - 1;
+	iterator	it = position;
+	
+	for (; it < it_end; ++it)
+	{
+		_allocator.destroy(&(*it));
+		_allocator.construct(&(*it), *(it + 1));
+	}
+	--_size;
+	return position;
 }
 
 template<typename T, typename Allocator>
 typename vector<T, Allocator>::iterator	vector<T, Allocator>::
 erase(iterator first, iterator last)
 {
-	// TODO
+	iterator	it_end = end() - 1;
+	size_type	quantity = last - first;
+	
+	for (; first < last && first < end() - quantity; ++first)
+	{
+		_allocator.destroy(&(*first));
+		_allocator.construct(&(*first), *(first + quantity));
+	}
+	for (; first < last; ++first)
+		_allocator.destroy(&(*first));
+	_size -= quantity;
+	return last;
 }
 
 template<typename T, typename Allocator>
