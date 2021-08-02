@@ -46,6 +46,8 @@ class ReverseIterator
 		ReverseIterator	&operator-=(difference_type value);
 		pointer			operator->() const;
 		reference		operator[](difference_type value) const;
+		template<typename T>
+		operator ReverseIterator<VectorIterator<T, true> >();
 	private:
 		iterator_type	_iterator;
 };
@@ -56,14 +58,14 @@ ReverseIterator() { }
 
 template<typename I>
 ReverseIterator<I>::
-ReverseIterator(ReverseIterator<I>::iterator_type it)
+ReverseIterator(iterator_type it)
 {
 	_iterator = it;
 }
 
 template<typename I>
 ReverseIterator<I>::
-ReverseIterator(const ReverseIterator<I> &source)
+ReverseIterator(const ReverseIterator &source)
 {
 	_iterator = source._iterator;
 }
@@ -83,7 +85,7 @@ template<typename I>
 typename ReverseIterator<I>::reference ReverseIterator<I>::
 operator*() const
 {
-	ReverseIterator<I>::iterator_type	temp_it = _iterator;
+	iterator_type	temp_it = _iterator;
 
 	--temp_it;
 	return *temp_it;
@@ -168,6 +170,16 @@ operator[](ReverseIterator<I>::difference_type value) const
 {
 	return _iterator[value];
 }
+
+template<typename I, typename T>
+ReverseIterator<I>::
+operator ReverseIterator<VectorIterator<T, true> >()
+{
+	// TODO
+}
+
+
+// NON-MEMBER FUNCTIONS
 
 template<typename Iterator>
 bool	operator==(const ReverseIterator<Iterator> &left,\

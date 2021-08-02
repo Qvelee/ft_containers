@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:39:51 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/02 19:21:07 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/02 21:09:01 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,19 @@ void	TestBeginEndIterators()
 	
 	cout << "printing vector using const iterators: " << endl;
 	for (vector<int>::const_iterator it = vec.begin(); it < vec.end(); ++it)
-		std::cout << *it;
+		std::cout << *it << ' ';
 	cout << endl;
+
+	cout << "printing vector using reverse iterators: " << endl;
+	for (vector<int>::reverse_iterator it = vec.rbegin(); it < vec.rend(); ++it)
+		std::cout << *it << ' ';
+	cout << endl;
+	
+	cout << "printing vector using const reverse iterators: " << endl;
+	for (vector<int>::const_reverse_iterator it = vec.rbegin(); it < vec.rend(); ++it)
+		std::cout << *it << ' ';
+	cout << endl;
+
 	cout << "finish\n\n";
 }
 

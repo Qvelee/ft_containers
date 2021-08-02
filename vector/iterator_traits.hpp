@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 16:17:52 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/07/30 17:56:40 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/02 20:48:47 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ using std::random_access_iterator_tag;
 template<typename Iterator>
 struct iterator_traits
 {
-	typedef typename Iterator::difference_type		differrence_type;
+	typedef typename Iterator::difference_type		difference_type;
 	typedef typename Iterator::value_type			value_type;
 	typedef typename Iterator::pointer				pointer;
 	typedef typename Iterator::reference			reference;
@@ -34,7 +34,7 @@ struct iterator_traits
 template<typename T>
 struct iterator_traits<T*>
 {
-	typedef std::ptrdiff_t				differrence_type;
+	typedef std::ptrdiff_t				difference_type;
 	typedef T							value_type;
 	typedef T*							pointer;
 	typedef T&							reference;
@@ -44,7 +44,7 @@ struct iterator_traits<T*>
 template<typename T>
 struct iterator_traits<const T*>
 {
-	typedef std::ptrdiff_t				differrence_type;
+	typedef std::ptrdiff_t				difference_type;
 	typedef T							value_type;
 	typedef const T*					pointer;
 	typedef const T&					reference;
