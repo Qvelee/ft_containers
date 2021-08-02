@@ -6,7 +6,7 @@
 #    By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/14 16:22:01 by nelisabe          #+#    #+#              #
-#    Updated: 2021/07/26 14:45:09 by nelisabe         ###   ########.fr        #
+#    Updated: 2021/08/02 15:29:10 by nelisabe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,15 @@ YELLOW =		\033[33m
 GRAY =			\033[2m
 ##############
 
-NAME =			webserv
+NAME =			containers
 
 COMP ?=			clang++
 
 FLAGS ?=		-g -std=c++98 -Wall -Wextra -Werror
 
-INCLUDES ?=		-I.
+MODE ?=			0
+
+INCLUDES ?=		-I. -I./vector/
 
 #SRC DIRS
 
@@ -35,8 +37,7 @@ SRC_DIR =		./
 
 #SRC
 
-SRC =			main.cpp \
-				vector.cpp
+SRC =			main.cpp
 
 #OBJ DIRS
 
@@ -56,11 +57,11 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ)
-	@$(COMP) $(FLAGS) $< $(INCLUDES) -o $@ -MMD
-	@echo -e "$(YELLOW)$(BOLD)$(NAME) created!$(RESET)"
+	@$(COMP) $(FLAGS) -D MODE=$(MODE) $< $(INCLUDES) -o $@ -MMD
+	@echo -e "$(GREEN)$(BOLD)$(NAME) created!$(RESET)"
 
 $(addprefix $(OBJ_DIR), %.o): %.cpp
-	@$(COMP) -c $(FLAGS) $(INCLUDES) $< -o $@ -MMD
+	@$(COMP) -c $(FLAGS) -D MODE=$(MODE) $(INCLUDES) $< -o $@ -MMD
 
 clean:
 	@echo -e "$(GRAY)Deleting...$(RESET)"

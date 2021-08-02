@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 16:04:34 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/01 17:22:38 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/02 19:21:03 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ class VectorIterator
 		VectorIterator		&operator+=(int value);
 		VectorIterator		&operator-=(int value);
 		conditional_t		&operator[](int index);
+		operator VectorIterator<T, true>();
 	private:
 		conditional_t	*_pointer;
 };
@@ -182,28 +183,28 @@ operator-(const VectorIterator &rigth) const
 }
 
 template<typename T, bool IsConst>
-bool				VectorIterator<T, IsConst>::
+bool	VectorIterator<T, IsConst>::
 operator<(const VectorIterator &rigth) const
 {
 	return _pointer < rigth._pointer;
 }
 
 template<typename T, bool IsConst>
-bool				VectorIterator<T, IsConst>::
+bool	VectorIterator<T, IsConst>::
 operator>(const VectorIterator &rigth) const
 {
 	return _pointer > rigth._pointer;
 }
 
 template<typename T, bool IsConst>
-bool				VectorIterator<T, IsConst>::
+bool	VectorIterator<T, IsConst>::
 operator<=(const VectorIterator &rigth) const
 {
 	return _pointer <= rigth._pointer;
 }
 
 template<typename T, bool IsConst>
-bool				VectorIterator<T, IsConst>::
+bool	VectorIterator<T, IsConst>::
 operator>=(const VectorIterator &rigth) const
 {
 	return _pointer >= rigth._pointer;
@@ -230,6 +231,12 @@ typename VectorIterator<T, IsConst>::conditional_t	&VectorIterator<T, IsConst>::
 operator[](int index)
 {
 	return _pointer[index];
+}
+
+template<typename T, bool IsConst>
+VectorIterator<T, IsConst>::operator VectorIterator<T, true>()
+{
+	return VectorIterator<T, true>(_pointer);
 }
 
 template<typename T, bool IsConst>

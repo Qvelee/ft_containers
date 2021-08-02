@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:37:15 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/02 11:28:26 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/02 17:54:31 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@
 # include <cstdlib>
 # include <memory>
 # include <limits>
+# include <iostream>
 # include "vector_iterator.hpp"
 # include "iterator_traits.hpp"
 # include "reverse_iterator.hpp"
+# include "utils.hpp"
 
 namespace ft
 {
@@ -90,10 +92,15 @@ class vector
 		allocator_type			get_allocator() const;
 	private:
 		void			init(const allocator_type &alloc);
+		void			init();
+		template<typename InputIterator>
+		void			_assign(InputIterator first, InputIterator last, true_type);
+		template<typename InputIterator>
+		void			_assign(InputIterator first, InputIterator last, false_type);
 
-		pointer			_array;
 		size_type		_size;
 		size_type		_capacity;
+		pointer			_array;
 		allocator_type	_allocator;
 };
 
@@ -118,13 +125,14 @@ vector<T, Allocator>::
 vector(InputIterator first, InputIterator last, const allocator_type &alloc)
 {
 	init(alloc);
-	assign(first, last);
+	_assign(first, last, typename is_integral<InputIterator>::value());
 }
 
 template<typename T, typename Allocator>
 vector<T, Allocator>::
 vector(const vector &source)
 {
+	init();
 	*this = source;
 }
 
@@ -140,14 +148,14 @@ template<typename T, typename Allocator>
 vector<T, Allocator>	&vector<T, Allocator>::
 operator=(const vector &source)
 {
-	for (difference_type i = 0; i < _size; ++i)
+	for (size_type i = 0; i < _size; ++i)
 		_allocator.destroy(_array + i);
 	_size = 0;
 	if (!source._size)
 		return *this;
 	if (source._size > _capacity)
 		reserve(source._size);
-	for (difference_type i = 0; i < source._size; ++i)
+	for (size_type i = 0; i < source._size; ++i)
 		push_back(source[i]);
 	return *this;
 }
@@ -278,26 +286,26 @@ reserve(size_type capacity)
 {
 	if (capacity <= _capacity)
 		return;
-	pointer	new_array;
+	pointer		new_array;
+	size_type	i = 0;
 
 	// allocate empty memory 
 	// here don't need to capacity * sizeof(T) because allocator<T>
 	new_array = _allocator.allocate(capacity);
 	// construct (copy) objects in allocated memory == new(new_array + i) T(_array[i])
-	difference_type i = 0;
 	try
 	{
 		for (; i < _size; ++i)
 			_allocator.construct(new_array + i, _array[i]);
 	} catch(...)
 	{
-		for (difference_type j = 0; j < i; ++j)
+		for (size_type j = 0; j < i; ++j)
 			_allocator.destroy(new_array + j);
 		_allocator.deallocate(new_array, capacity);
 		throw;
 	}
 	// destoying objects == (_array + i)->~T();
-	for (difference_type j = 0; j < _size; ++j)
+	for (size_type j = 0; j < _size; ++j)
 		_allocator.destroy(_array + j);
 	_allocator.deallocate(_array, _capacity);
 	_array = new_array;
@@ -353,6 +361,22 @@ back() const
 template<typename T, typename Allocator>
 template <typename InputIterator>
 void	vector<T, Allocator>::
+_assign(InputIterator first, InputIterator last, true_type)
+{
+	assign(static_cast<size_type>(first), last);
+}
+
+template<typename T, typename Allocator>
+template <typename InputIterator>
+void	vector<T, Allocator>::
+_assign(InputIterator first, InputIterator last, false_type)
+{
+	assign(first, last);
+}
+
+template<typename T, typename Allocator>
+template <typename InputIterator>
+void	vector<T, Allocator>::
 assign(InputIterator first, InputIterator last)
 {
 	clear();
@@ -370,7 +394,7 @@ assign(size_type quantity, const value_type &value)
 	if (!quantity)
 		return;
 	reserve(quantity);
-	for (difference_type i = 0; i < quantity; ++i)
+	for (size_type i = 0; i < quantity; ++i)
 		push_back(value);
 }
 
@@ -495,14 +519,24 @@ template<typename T, typename Allocator>
 void	vector<T, Allocator>::
 swap(vector &source)
 {
-	// TODO
+	pointer		temp_pointer;
+
+	_size ^= source._size; // XOR swap
+	source._size ^= _size;
+	_size ^= source._size;
+	_capacity = source._capacity;
+	source._capacity = _capacity;
+	_capacity = source._capacity;
+	temp_pointer = _array;
+	_array = source._array;
+	source._array = temp_pointer;
 }
 
 template<typename T, typename Allocator>
 void	vector<T, Allocator>::
 clear()
 {
-	for (difference_type i = 0; i < _size; ++i)
+	for (size_type i = 0; i < _size; ++i)
 		_allocator.destroy(_array + i);
 	_size = 0;
 }
@@ -525,9 +559,18 @@ init(const allocator_type &alloc)
 }
 
 template<typename T, typename Allocator>
+void	vector<T, Allocator>::
+init()
+{
+	_size = 0;
+	_capacity = 0;
+	_array = NULL;
+}
+
+template<typename T, typename Allocator>
 void swap(vector<T, Allocator> &first, vector<T, Allocator> &second)
 {
-	// TODO
+	first.swap(second);
 }
 
 template<typename T, class Allocator>
@@ -548,22 +591,6 @@ template<typename T, class Allocator>
 bool operator!=(const vector<T, Allocator> &left, const vector<T, Allocator> &right)
 {
 	return !operator==(left, right);
-}
-
-template<typename InputIterator1, typename InputIterator2>
-bool	lexicographical_compare(InputIterator1 first_1, InputIterator1 last_1,
-	InputIterator2 first_2, InputIterator2 last_2)
-{
-	while (first_1 != last_1)
-	{
-		if (first_2 == last_2 || *first_1 > *first_2)
-			return false;
-		else if (*first_1 < *first_2)
-			return true;
-		++first_1;
-		++first_2;
-	}
-	return first_2 != last_2;
 }
 
 template<typename T, class Allocator>
