@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:37:15 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/02 17:54:31 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/03 16:29:36 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,21 @@ class vector
 		void					clear();
 		allocator_type			get_allocator() const;
 	private:
-		void			init(const allocator_type &alloc);
-		void			init();
+		void	init(const allocator_type &alloc);
+		void	init();
 		template<typename InputIterator>
-		void			_assign(InputIterator first, InputIterator last, true_type);
+		void	_assign(InputIterator first, InputIterator last, true_type);
 		template<typename InputIterator>
-		void			_assign(InputIterator first, InputIterator last, false_type);
+		void	_assign(InputIterator first, InputIterator last, false_type);
+		template<typename InputIterator>
+		void	_insert(iterator position, InputIterator first,
+			InputIterator last, true_type);
+		template<typename InputIterator>
+		void	_insert(iterator position, InputIterator first,
+			InputIterator last, false_type);
+		template<typename InputIterator>
+		void	_insert(iterator position, InputIterator first,
+			InputIterator last);
 
 		size_type		_size;
 		size_type		_capacity;
@@ -241,25 +250,28 @@ template<typename T, typename Allocator>
 typename vector<T, Allocator>::size_type	vector<T, Allocator>::
 max_size() const
 {
-	return std::numeric_limits<difference_type>::max();
+	size_type	max_size = std::numeric_limits<size_type>::max() / sizeof(T);
+	size_type	max_alloc = _allocator.max_size();
+	
+	return std::min(max_size, max_alloc);
 }
 
 template<typename T, typename Allocator>
 void	vector<T, Allocator>::
-resize(size_type size, value_type value)
+resize(size_type new_size, value_type value)
 {
-	if (size == _size)
+	if (new_size == _size)
 		return;
-	if (size > _capacity)
-		reserve(size);
-	if (size < _size)
-		while (_size != size)
+	if (new_size > _capacity)
+		reserve(_size + std::max(_size, new_size - _size));
+	if (new_size < _size)
+		while (_size != new_size)
 		{
 			--_size;
 			_allocator.destroy(_array + _size);
 		}
 	else
-		while (_size < size)
+		while (_size < new_size)
 		{
 			_allocator.construct(_array + _size, value);
 			++_size;
@@ -284,6 +296,8 @@ template<typename T, typename Allocator>
 void	vector<T, Allocator>::
 reserve(size_type capacity)
 {
+	if (capacity == 0)
+		capacity = 1;
 	if (capacity <= _capacity)
 		return;
 	pointer		new_array;
@@ -403,7 +417,7 @@ void	vector<T, Allocator>::
 push_back(const value_type &value)
 {
 	if (_size == _capacity)
-		reserve(_capacity ? _capacity * 2 : 1);
+		reserve(_capacity << 1);
 	_allocator.construct(_array + _size, value);
 	++_size;
 }
@@ -421,7 +435,8 @@ insert(iterator position, const value_type &value)
 {
 	difference_type	pos_index = position - begin();
 
-	reserve(_size + 1);
+	if (_size + 1 > _capacity)
+		reserve(_size + std::max(_size, static_cast<size_type>(1)));
 	++_size;
 	position = iterator(begin() + pos_index);
 	iterator it = end() - 1;
@@ -444,9 +459,12 @@ template<typename T, typename Allocator>
 void	vector<T, Allocator>::
 insert(iterator position, size_type quantity, const value_type &value)
 {
+	if (!quantity)
+		return;
 	difference_type	pos_index = position - begin();
 
-	reserve(_size + quantity);
+	if (_size + quantity > _capacity)
+		reserve(_size + std::max(_size, quantity));
 	_size += quantity;
 	position = iterator(begin() + pos_index);
 	iterator it = end() - 1;
@@ -464,10 +482,38 @@ template<typename InputIterator>
 void	vector<T, Allocator>::
 insert(iterator position, InputIterator first, InputIterator last)
 {
-	difference_type	pos_index = position - begin();
-	size_type		quantity = last - first;
+	_insert(position, first, last, typename is_integral<InputIterator>::value());
+}
 
-	reserve(_size + quantity);
+template<typename T, typename Allocator>
+template <typename InputIterator>
+void	vector<T, Allocator>::
+_insert(iterator position, InputIterator first, InputIterator last, true_type)
+{
+	insert(position, static_cast<size_type>(first), last);
+}
+
+template<typename T, typename Allocator>
+template <typename InputIterator>
+void	vector<T, Allocator>::
+_insert(iterator position, InputIterator first, InputIterator last, false_type)
+{
+	_insert(position, first, last);
+}
+
+template<typename T, typename Allocator>
+template<typename InputIterator>
+void	vector<T, Allocator>::
+_insert(iterator position, InputIterator first, InputIterator last)
+{
+	size_type		quantity;
+
+	if (!(quantity = last - first))
+		return;
+	difference_type	pos_index = position - begin();
+
+	if (_size + quantity > _capacity)
+		reserve(_size + std::max(_size, quantity));
 	_size += quantity;
 	position = iterator(begin() + pos_index);
 	iterator it = end() - 1;
@@ -524,9 +570,9 @@ swap(vector &source)
 	_size ^= source._size; // XOR swap
 	source._size ^= _size;
 	_size ^= source._size;
-	_capacity = source._capacity;
-	source._capacity = _capacity;
-	_capacity = source._capacity;
+	_capacity ^= source._capacity;
+	source._capacity ^= _capacity;
+	_capacity ^= source._capacity;
 	temp_pointer = _array;
 	_array = source._array;
 	source._array = temp_pointer;

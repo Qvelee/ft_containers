@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:39:51 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/02 21:09:01 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/03 16:35:47 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #define RED		"\033[31m"
 #define RESET	"\033[0m"
 #define BOLD	"\033[1m"
+#define GREEN	"\033[32m"
 
 #if MODE
 	using std::vector;
@@ -38,6 +39,94 @@ using std::string;
 template<typename T>
 void	print_state(const vector<T> &vec);
 void	print_test(const string &);
+void	print_step(const string &);
+
+class	Test
+{
+	public:
+		Test()
+		{
+			cout << "Test constructor called!\n" ;
+			_array = new int[10];
+			_str = "Awesome string\n";
+		}
+		Test(const Test &test)
+		{
+			cout << "Test copy constructor called!\n";
+			_array = new int [10];
+			_str = test._str;
+		}
+		~Test()
+		{
+			cout << "Test destructor called!\n" ;
+			delete [] _array;
+		}
+	private:
+		int			*_array;
+		std::string	_str;
+};
+
+void	TestElementsMemory()
+{
+	vector<int>	vec;
+	
+	cout << "Vector max size: " << vec.max_size() << endl;
+	print_state(vec);
+
+	print_step("Push Pop to vec");
+	vec.push_back(1);
+	vec.push_back(2);
+	vec.push_back(3);
+	vec.push_back(4);
+	vec.push_back(5);
+	print_state(vec);
+
+	vec.pop_back();
+	vec.pop_back();
+	print_state(vec);
+
+	print_step("Insert to vec");
+	vector<int> insertme(4, 20);
+	vec.insert(vec.begin() + 2, 30);
+	print_state(vec);
+
+	vec.insert(vec.begin() + 3, 5, 110);
+	print_state(vec);
+
+	vec.insert(vec.end() - 2, insertme.begin(), insertme.end());
+	print_state(vec);
+
+	print_step("Insert to vec2");
+	vector<int>	vec2;
+	vec2.insert(vec2.begin(), 2);
+	print_state(vec2);
+
+	vec2.insert(vec2.begin(), 3);
+	print_state(vec2);
+
+	vec2.insert(vec2.begin() + 1, 4, 250);
+	print_state(vec2);
+
+	print_step("Erase from vec2");
+	vec2.erase(vec2.begin() + 1);
+	print_state(vec2);
+
+	vec2.erase(vec2.end() - 3, vec2.end());
+	print_state(vec2);
+
+	vec2.erase(vec2.begin(), vec2.end());
+	print_state(vec2);
+
+	print_step("Resize vec2");
+	vec2.resize(4);
+	print_state(vec2);
+
+	vec2.resize(7, 13221);
+	print_state(vec2);
+
+	vec2.resize(15);
+	print_state(vec2);
+}
 
 void	TestBeginEndIterators()
 {
@@ -88,7 +177,7 @@ void	TestBeginEndIterators()
 	cout << endl;
 	
 	cout << "printing vector using const reverse iterators: " << endl;
-	for (vector<int>::const_reverse_iterator it = vec.rbegin(); it < vec.rend(); ++it)
+	for (vector<int>::const_reverse_iterator it = vec.rbegin(); it - vec.rend(); ++it)
 		std::cout << *it << ' ';
 	cout << endl;
 
@@ -153,6 +242,11 @@ void	print_test(const string &str)
 	cout << YELLOW << str << RESET << "\n\n";
 }
 
+void	print_step(const string &str)
+{
+	cout << GREEN << str << RESET << "\n\n";
+}
+
 void	hello()
 {
 	cout << "Testing ";
@@ -167,9 +261,11 @@ void	hello()
 int		main(void)
 {
 	hello();
-	TestDefaultConstructor();
-	TestFillConstructor();
-	TestRangeConstructor();
-	TestCopyConstructor();
-	TestBeginEndIterators();
+	// TestDefaultConstructor();
+	// TestFillConstructor();
+	// TestRangeConstructor();
+	// TestCopyConstructor();
+	// TestBeginEndIterators();
+	TestElementsMemory();
+	return 0;
 }
