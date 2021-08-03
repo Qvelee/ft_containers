@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:37:15 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/03 16:29:36 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/03 16:52:56 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -348,28 +348,28 @@ template<typename T, typename Allocator>
 typename vector<T, Allocator>::reference	vector<T, Allocator>::
 front()
 {
-	return _array[0];
+	return *begin();
 }
 
 template<typename T, typename Allocator>
 typename vector<T, Allocator>::const_reference	vector<T, Allocator>::
 front() const
 {
-	return _array[0];
+	return *begin();
 }
 
 template<typename T, typename Allocator>
 typename vector<T, Allocator>::reference	vector<T, Allocator>::
 back()
 {
-	return _array[_size - 1];
+	return *(end() - 1);
 }
 
 template<typename T, typename Allocator>
 typename vector<T, Allocator>::const_reference	vector<T, Allocator>::
 back() const
 {
-	return _array[_size - 1];
+	return *(end() - 1);
 }
 
 template<typename T, typename Allocator>

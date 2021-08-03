@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:39:51 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/03 16:35:47 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/03 17:21:56 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@
 
 #if MODE
 	using std::vector;
+	using std::swap;
 #else
 	using ft::vector;
+	using ft::swap;
 #endif
 
 using std::cout;
@@ -41,33 +43,79 @@ void	print_state(const vector<T> &vec);
 void	print_test(const string &);
 void	print_step(const string &);
 
-class	Test
+void	TestOther()
 {
-	public:
-		Test()
-		{
-			cout << "Test constructor called!\n" ;
-			_array = new int[10];
-			_str = "Awesome string\n";
-		}
-		Test(const Test &test)
-		{
-			cout << "Test copy constructor called!\n";
-			_array = new int [10];
-			_str = test._str;
-		}
-		~Test()
-		{
-			cout << "Test destructor called!\n" ;
-			delete [] _array;
-		}
-	private:
-		int			*_array;
-		std::string	_str;
-};
+	print_test("TestOther");
+	vector<int>	vec;
+	
+	print_step("Test []");
+	vec.push_back(1);
+	vec.push_back(2);
+	vec.push_back(3);
+	vec.push_back(4);
+	vec.push_back(5);
+	cout << "front: " << vec.front() << endl;
+	cout << "end: " << vec.back() << endl;
+	cout << "vec: ";
+	for (size_t i = 0; i < vec.size(); ++i)
+		cout << vec[i] << ' ';
+	cout << '\n';
+
+	print_step("Test at");
+	vector<int>	vec2;
+
+	vec2.push_back(6);
+	vec2.push_back(7);
+	vec2.push_back(8);
+	vec2.push_back(9);
+	vec2.push_back(10);
+	cout << "vec2: ";
+	for (size_t i = 0; i < vec.size(); ++i)
+		cout << vec.at(i) << ' ';
+	cout << '\n';
+	try
+	{
+		vec.at(10000);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << '\n';
+	}
+	cout << endl;
+	print_step("Test swap");
+	print_step("1 swap");
+	
+	vec.insert(vec.begin(), 10, 1110);
+	cout << "vec: \n";
+	print_state(vec);
+	cout << "vec2: \n";
+	print_state(vec2);
+	
+	vector<int>::iterator it1 = vec.begin();
+	vector<int>::iterator it2 = vec2.begin();
+	cout << "it vec: " << *it1 << " | it vec2: " << *it2 << endl;
+	vec.swap(vec2);
+
+	print_step("2 swap");
+	cout << "vec: \n";
+	print_state(vec);
+	cout << "vec2: \n";
+	print_state(vec2);
+
+	cout << "it vec: " << *it1 << " | it vec2: " << *it2 << endl;
+
+	print_step("3 swap");
+	swap(vec, vec2);
+	cout << "vec: \n";
+	print_state(vec);
+	cout << "vec2: \n";
+	print_state(vec2);
+	cout << "it vec: " << *it1 << " | it vec2: " << *it2 << endl;
+}
 
 void	TestElementsMemory()
 {
+	print_test("TestElementsMemory");
 	vector<int>	vec;
 	
 	cout << "Vector max size: " << vec.max_size() << endl;
@@ -261,11 +309,12 @@ void	hello()
 int		main(void)
 {
 	hello();
-	// TestDefaultConstructor();
-	// TestFillConstructor();
-	// TestRangeConstructor();
-	// TestCopyConstructor();
-	// TestBeginEndIterators();
+	TestDefaultConstructor();
+	TestFillConstructor();
+	TestRangeConstructor();
+	TestCopyConstructor();
+	TestBeginEndIterators();
 	TestElementsMemory();
+	TestOther();
 	return 0;
 }
