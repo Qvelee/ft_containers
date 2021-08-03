@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:37:15 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/03 16:52:56 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/03 19:52:38 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 namespace ft
 {
 
-template<typename T, class Allocator = std::allocator<T> >
+template<typename T, typename Allocator = std::allocator<T> >
 class vector
 {
 	public:
@@ -289,7 +289,7 @@ template<typename T, typename Allocator>
 bool	vector<T, Allocator>::
 empty() const
 {
-	return _size;
+	return !_size;
 }
 
 template<typename T, typename Allocator>

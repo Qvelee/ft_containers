@@ -6,15 +6,16 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:39:51 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/03 17:21:56 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/03 20:08:20 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "vector.hpp"
 # include <vector>
 # include <iostream>
 # include <string>
 # include <unistd.h>
+# include "vector.hpp"
+# include "stack.hpp"
 
 #ifndef MODE
 #define MODE 0
@@ -302,19 +303,61 @@ void	hello()
 		cout << BOLD << RED << "std" << RESET;
 	else
 		cout << BOLD << RED << "ft" << RESET;
-	cout << " vector!\n" << endl;
-	sleep(2);
+	cout << "!\n" << endl;
+	sleep(1);
 }
 
-int		main(void)
+void	TestStack()
+{
+	ft::stack<int>	stck;
+
+	cout << "stack empty?: " << std::boolalpha << stck.empty() << endl;
+	stck.push(20);
+	stck.push(10);
+	
+	cout << "last element: " << stck.top() << endl;
+	stck.pop();
+	
+	cout << "last element: " << stck.top() << endl;
+	stck.push(30);
+	stck.push(40);
+	cout << "size: " << stck.size() << endl;
+	
+	ft::stack<int>	stck2;
+	stck2.push(20);
+	stck2.push(30);
+	stck2.push(40);
+	cout << "is stacks ==?: " << std::boolalpha << (stck == stck2) << endl;
+	cout << "is stacks !=?: " << std::boolalpha << (stck != stck2) << endl;
+	stck2.push(50);
+	cout << "is stacks <?: " << std::boolalpha << (stck < stck2) << endl;
+	cout << "is stacks >?: " << std::boolalpha << (stck > stck2) << endl;
+	cout << "is stacks <=?: " << std::boolalpha << (stck <= stck2) << endl;
+	cout << "is stacks >=?: " << std::boolalpha << (stck >= stck2) << endl;
+}
+
+int		main(int argc, char **argv)
 {
 	hello();
-	TestDefaultConstructor();
-	TestFillConstructor();
-	TestRangeConstructor();
-	TestCopyConstructor();
-	TestBeginEndIterators();
-	TestElementsMemory();
-	TestOther();
+	if (argc != 2)
+	{
+		cout << "Usage: ./containers \"container\"" << endl;
+		return 0;
+	}
+	std::string	arg = std::string(argv[1]);
+	if (arg == "vector")
+	{
+		TestDefaultConstructor();
+		TestFillConstructor();
+		TestRangeConstructor();
+		TestCopyConstructor();
+		TestBeginEndIterators();
+		TestElementsMemory();
+		TestOther();
+	}
+	if (arg == "stack")
+	{
+		TestStack();
+	}
 	return 0;
 }
