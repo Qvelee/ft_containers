@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:37:15 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/03 19:52:38 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/03 20:18:32 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ vector<T, Allocator>::
 vector(InputIterator first, InputIterator last, const allocator_type &alloc)
 {
 	init(alloc);
-	_assign(first, last, typename is_integral<InputIterator>::value());
+	assign(first, last);
 }
 
 template<typename T, typename Allocator>
@@ -375,29 +375,9 @@ back() const
 template<typename T, typename Allocator>
 template <typename InputIterator>
 void	vector<T, Allocator>::
-_assign(InputIterator first, InputIterator last, true_type)
-{
-	assign(static_cast<size_type>(first), last);
-}
-
-template<typename T, typename Allocator>
-template <typename InputIterator>
-void	vector<T, Allocator>::
-_assign(InputIterator first, InputIterator last, false_type)
-{
-	assign(first, last);
-}
-
-template<typename T, typename Allocator>
-template <typename InputIterator>
-void	vector<T, Allocator>::
 assign(InputIterator first, InputIterator last)
 {
-	clear();
-	if (first != last)
-		reserve(last - first);
-	while (first != last)
-		push_back(*first++);
+	_assign(first, last, typename is_integral<InputIterator>::value());
 }
 
 template<typename T, typename Allocator>
@@ -410,6 +390,26 @@ assign(size_type quantity, const value_type &value)
 	reserve(quantity);
 	for (size_type i = 0; i < quantity; ++i)
 		push_back(value);
+}
+
+template<typename T, typename Allocator>
+template <typename InputIterator>
+void	vector<T, Allocator>::
+_assign(InputIterator first, InputIterator last, true_type)
+{
+	assign(static_cast<size_type>(first), last);
+}
+
+template<typename T, typename Allocator>
+template <typename InputIterator>
+void	vector<T, Allocator>::
+_assign(InputIterator first, InputIterator last, false_type)
+{
+	clear();
+	if (first != last)
+		reserve(last - first);
+	while (first != last)
+		push_back(*first++);
 }
 
 template<typename T, typename Allocator>

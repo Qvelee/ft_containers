@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:39:51 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/03 20:08:20 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/03 20:21:27 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,51 @@ template<typename T>
 void	print_state(const vector<T> &vec);
 void	print_test(const string &);
 void	print_step(const string &);
+
+void	TestStack()
+{
+	ft::stack<int>	stck;
+
+	cout << "stack empty?: " << std::boolalpha << stck.empty() << endl;
+	stck.push(20);
+	stck.push(10);
+	
+	cout << "last element: " << stck.top() << endl;
+	stck.pop();
+	
+	cout << "last element: " << stck.top() << endl;
+	stck.push(30);
+	stck.push(40);
+	cout << "size: " << stck.size() << endl;
+	
+	ft::stack<int>	stck2;
+	stck2.push(20);
+	stck2.push(30);
+	stck2.push(40);
+	cout << "is stacks ==?: " << std::boolalpha << (stck == stck2) << endl;
+	cout << "is stacks !=?: " << std::boolalpha << (stck != stck2) << endl;
+	stck2.push(50);
+	cout << "is stacks <?: " << std::boolalpha << (stck < stck2) << endl;
+	cout << "is stacks >?: " << std::boolalpha << (stck > stck2) << endl;
+	cout << "is stacks <=?: " << std::boolalpha << (stck <= stck2) << endl;
+	cout << "is stacks >=?: " << std::boolalpha << (stck >= stck2) << endl;
+}
+
+void	TestOperators()
+{
+	print_test("TestOperator");
+	vector<int>	vec;
+	vector<int>	vec2;
+
+	vec.assign(10, 100);
+	vec2.assign(9, 100);
+	cout << "is vectors ==?: " << std::boolalpha << (vec == vec2) << endl;
+	cout << "is vectors !=?: " << std::boolalpha << (vec != vec2) << endl;
+	cout << "is vectors <?: " << std::boolalpha << (vec < vec2) << endl;
+	cout << "is vectors <=?: " << std::boolalpha << (vec <= vec2) << endl;
+	cout << "is vectors >?: " << std::boolalpha << (vec > vec2) << endl;
+	cout << "is vectors >=?: " << std::boolalpha << (vec >= vec2) << endl;
+}
 
 void	TestOther()
 {
@@ -307,35 +352,6 @@ void	hello()
 	sleep(1);
 }
 
-void	TestStack()
-{
-	ft::stack<int>	stck;
-
-	cout << "stack empty?: " << std::boolalpha << stck.empty() << endl;
-	stck.push(20);
-	stck.push(10);
-	
-	cout << "last element: " << stck.top() << endl;
-	stck.pop();
-	
-	cout << "last element: " << stck.top() << endl;
-	stck.push(30);
-	stck.push(40);
-	cout << "size: " << stck.size() << endl;
-	
-	ft::stack<int>	stck2;
-	stck2.push(20);
-	stck2.push(30);
-	stck2.push(40);
-	cout << "is stacks ==?: " << std::boolalpha << (stck == stck2) << endl;
-	cout << "is stacks !=?: " << std::boolalpha << (stck != stck2) << endl;
-	stck2.push(50);
-	cout << "is stacks <?: " << std::boolalpha << (stck < stck2) << endl;
-	cout << "is stacks >?: " << std::boolalpha << (stck > stck2) << endl;
-	cout << "is stacks <=?: " << std::boolalpha << (stck <= stck2) << endl;
-	cout << "is stacks >=?: " << std::boolalpha << (stck >= stck2) << endl;
-}
-
 int		main(int argc, char **argv)
 {
 	hello();
@@ -354,6 +370,7 @@ int		main(int argc, char **argv)
 		TestBeginEndIterators();
 		TestElementsMemory();
 		TestOther();
+		TestOperators();
 	}
 	if (arg == "stack")
 	{
