@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 12:51:23 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/04 13:39:03 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/04 14:07:47 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 
 namespace ft
 {
+
+// make_pair function defined and implemented in this file below
 
 template<typename T1, typename T2>
 struct pair
@@ -74,22 +76,35 @@ operator=(const pair &source)
 }
 
 template<typename T1, typename T2>
-bool operator==(const pair<T1, T2> &left, const pair<T1, T2> &rigth);
+bool
+operator==(const pair<T1, T2> &left, const pair<T1, T2> &rigth);
 
 template<typename T1, typename T2>
-bool operator!=(const pair<T1, T2> &left, const pair<T1, T2> &rigth);
+bool
+operator!=(const pair<T1, T2> &left, const pair<T1, T2> &rigth);
 
 template<typename T1, typename T2>
-bool operator< (const pair<T1, T2> &left, const pair<T1, T2> &rigth);
+bool
+operator< (const pair<T1, T2> &left, const pair<T1, T2> &rigth);
 
 template<typename T1, typename T2>
-bool operator<=(const pair<T1, T2> &left, const pair<T1, T2> &rigth);
+bool
+operator<=(const pair<T1, T2> &left, const pair<T1, T2> &rigth);
 
 template<typename T1, typename T2>
-bool operator> (const pair<T1, T2> &left, const pair<T1, T2> &rigth);
+bool
+operator> (const pair<T1, T2> &left, const pair<T1, T2> &rigth);
 
 template<typename T1, typename T2>
-bool operator>=(const pair<T1, T2> &left, const pair<T1, T2> &rigth);
+bool
+operator>=(const pair<T1, T2> &left, const pair<T1, T2> &rigth);
+
+template<typename T1, typename T2>
+pair<T1, T2>
+make_pair(T1 first, T2 second)
+{
+	return pair<T1, T2>(first, second);
+}
 
 } // namespace ft
 
