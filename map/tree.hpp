@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/10 13:51:08 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/10 14:02:20 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ class Tree
 	private:
 		void			_Print(Node<data_type> *node);
 		Node<data_type>	*_Add(Node<data_type> *node, const data_type &data);
+		void			_Destroy(Node<data_type> *node);
 
 		size_type		_size;
 		Node<data_type>	*_tree;
@@ -92,7 +93,19 @@ template<typename Data, typename Key_from_data,
 Tree<Data, Key_from_data, Compare, Allocator>::
 ~Tree()
 {
-	// TODO
+	_Destroy(_tree);
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+void	Tree<Data, Key_from_data, Compare, Allocator>::
+_Destroy(Node<data_type> *node)
+{
+	if (node == NULL)
+		return;
+	_Destroy(node->left);
+	_Destroy(node->rigth);
+	delete node;
 }
 
 template<typename Data, typename Key_from_data,
