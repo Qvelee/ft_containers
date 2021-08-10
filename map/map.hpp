@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 12:43:56 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/04 14:19:12 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/10 11:54:50 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <cstddef>
 # include <cstdlib>
 # include "pair.hpp"
+# include "tree.hpp"
 
 namespace ft
 {
@@ -91,9 +92,8 @@ class map
 								equal_range(const key_type &key_) const;
 		allocator_type			get_allocator() const;
 	private:
-	
+		Tree<value_type, std::_Select1st<value_type>, Compare, Allocator>	tree;
 };
-
 
 } // namespace ft
 
