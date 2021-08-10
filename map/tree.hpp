@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/10 13:43:24 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/10 13:51:08 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,12 @@ _Add(Node<data_type> *node, const data_type &data)
 	if (node == NULL)
 	{
 		node = new Node<data_type>(data, NULL, NULL, NULL);
+		return node;
 	}
+	if (data < node->data) // TODO add compare function
+		node->left = _Add(node->left, data); 
+	if (data > node->data) // TODO add compare function
+		node->rigth = _Add(node->rigth, data); 
 	return node;
 }
 
