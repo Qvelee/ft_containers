@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 12:54:45 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/11 13:05:42 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,9 +201,9 @@ Delete(node_type *node, node_type *parent, const data_type &data)
 			child->left->parent = child;
 		if (child->rigth != NULL)
 			child->rigth->parent = child;
-		if (node->parent->rigth == node)
+		if (node->parent != NULL && node->parent->rigth == node)
 			node->parent->rigth = child;
-		else
+		else if (node->parent != NULL)
 			node->parent->left = child;
 		FreeNode(node);
 		return child;

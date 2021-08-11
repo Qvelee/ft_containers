@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 13:13:04 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 12:49:04 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/11 12:59:56 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,18 @@ int		main()
 	std::cout << "----------\n";
 	tree.Print();
 	std::cout << "----------\n";
-	tree.Delete(20);
+	tree.Delete(10);
 	tree.Print();
-	// std::cout << "----------\n";
-	// tree.Delete(7);
-	// tree.Print();
 	std::cout << "----------\n";
 	tree.PrintWidth();
+	
+	// tree.Delete(20);
+	// tree.Print();
+	// // std::cout << "----------\n";
+	// // tree.Delete(7);
+	// // tree.Print();
+	// std::cout << "----------\n";
+	// tree.PrintWidth();
 
 	return 0;
 }
