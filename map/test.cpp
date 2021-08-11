@@ -6,17 +6,44 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 13:13:04 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 11:50:57 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/11 12:49:04 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "tree.hpp"
+# include <functional>
 
 using namespace ft;
 
+template<typename Pair>
+struct SelectFirst
+{
+	typename Pair::first_type &operator()(Pair &pair) const
+	{
+		return pair.first;
+	}
+	const typename Pair::first_type &operator()(const Pair &pair) const
+	{
+		return pair.first;
+	}
+};
+
+template<typename T>
+struct Select
+{
+	T &operator()(T &x) const
+	{
+		return x;
+	}
+	const T &operator()(const T &x) const
+	{
+		return x;
+	}
+};
+
 int		main()
 {
-	Tree<int, void, void>	tree;
+	Tree<int, Select<int>, std::less<int> >	tree;
 	int		array[] = { 10, 7, 3, 8, 1, 5, 4, 6, 20, 15, 25, 13, 17, 16, 30, 29, 35 };
 
 	for (int i = 0; i < sizeof(array) / sizeof(array[0]); ++i)
