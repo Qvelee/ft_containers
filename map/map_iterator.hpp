@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:10:59 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 19:06:10 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/11 20:20:32 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ operator++()
 	//	didn't return this parent.
 	if (_node->rigth == NULL)
 	{
-		if (_node == _min_max_nodes->biggest)	
+		if (_node == _min_max_nodes->biggest)
 		{
 			_node = _end;
 			return *this;
@@ -167,7 +167,7 @@ operator++(int)
 {
 	MapIterator<T, IsConst>	temp_it = *this;
 
-	// ++_node; TODO
+	operator++();
 	return temp_it;
 }
 
@@ -175,7 +175,18 @@ template<typename T, bool IsConst>
 MapIterator<T, IsConst>	&MapIterator<T, IsConst>::
 operator--()
 {
-	// --_node; 
+	if (_node == _end)
+		_node = _min_max_nodes->biggest;
+	else if (_node->left == NULL)
+	{
+		for (; _node != _node->parent->rigth; _node = _node->parent);
+		_node = _node->parent;
+	}
+	else
+	{
+		_node = _node->left;
+		for (; _node->rigth != NULL; _node = _node->rigth);
+	}
 	return *this;
 }
 
@@ -185,7 +196,7 @@ operator--(int)
 {
 	MapIterator<T, IsConst>	temp_it = *this;
 
-	// --_node; TODO
+	operator--();
 	return temp_it;
 }
 
