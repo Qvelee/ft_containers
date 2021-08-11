@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 17:17:51 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/11 18:48:20 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,10 @@ typename Tree<Data, Key_from_data, Compare, Allocator>::iterator
 	Tree<Data, Key_from_data, Compare, Allocator>::
 begin()
 {
-	// TODO
+	if (_tree != NULL)
+		return iterator(_min_max_nodes.smallest, _end, &_min_max_nodes);
+		// return _min_max_nodes.smallest;
+	return iterator(_end, _end, &_min_max_nodes);
 }
 
 template<typename Data, typename Key_from_data,
@@ -176,7 +179,7 @@ typename Tree<Data, Key_from_data, Compare, Allocator>::iterator
 	Tree<Data, Key_from_data, Compare, Allocator>::
 end()
 {
-	return _end;
+	return iterator(_end, _end, &_min_max_nodes);
 }
 
 template<typename Data, typename Key_from_data,

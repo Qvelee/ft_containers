@@ -6,14 +6,15 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:10:59 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 14:57:42 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/11 19:06:10 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_ITERATOR_HPP
 # define MAP_ITERATOR_HPP
 
-#include "iterator_traits.hpp"
+# include "iterator_traits.hpp"
+# include "tree.hpp"
 
 namespace ft
 {
@@ -32,6 +33,9 @@ struct conditional<true, T1, T2>
 	typedef T1 type;
 };
 
+template<typename T>
+struct TreeBounds;
+
 template<typename T, bool IsConst = false>
 class MapIterator
 {
@@ -43,9 +47,10 @@ class MapIterator
 		typedef conditional_t&						reference;
 		typedef bidirectional_iterator_tag			iterator_category;
 		typedef std::ptrdiff_t						difference_type;
+		typedef TreeBounds<conditional_t>			tree_bounds;
 
 		MapIterator();
-		MapIterator(conditional_t *node);
+		MapIterator(conditional_t *node,  conditional_t *end, tree_bounds *min_max_nodes);
 		MapIterator(const MapIterator &source);
 		~MapIterator();
 
@@ -61,18 +66,18 @@ class MapIterator
 		operator MapIterator<T, true>();
 	private:
 		conditional_t	*_node;
+		conditional_t	*_end;
+		tree_bounds		*_min_max_nodes;
 };
 
 template<typename T, bool IsConst>
 MapIterator<T, IsConst>::
-MapIterator() { _node = NULL; }
+MapIterator() : _node(NULL), _end(NULL), _min_max_nodes(NULL) { }
 
 template<typename T, bool IsConst>
 MapIterator<T, IsConst>::
-MapIterator(MapIterator<T, IsConst>::conditional_t *node)
-{
-	_node = node;
-}
+MapIterator(conditional_t *node, conditional_t *end, tree_bounds *min_max_nodes) :
+	_node(node), _end(end), _min_max_nodes(min_max_nodes) { }
 
 template<typename T, bool IsConst>
 MapIterator<T, IsConst>::
@@ -90,6 +95,7 @@ MapIterator<T, IsConst>	&MapIterator<T, IsConst>::
 operator=(const MapIterator &source)
 {
 	_node = source._node;
+	_min_max_nodes = source._min_max_nodes;
 	return *this;
 }
 
@@ -125,7 +131,33 @@ template<typename T, bool IsConst>
 MapIterator<T, IsConst>	&MapIterator<T, IsConst>::
 operator++()
 {
-	// ++_node; TODO
+	// if current node basn't any bigger (rigth) child
+	//	then, if it is biggest tree element, we reached end.
+	//	else we need to go back from this node to it's parents.
+	//	but we must skip already passed and returned nodes, so:
+	//	while going back we need to check from where we came, if
+	//	previous node was rigth child we need to go to next parent,
+	//	because we already returned this parent later. if prev. node
+	//	was left child, we need to stop here, because we was here, but
+	//	didn't return this parent.
+	if (_node->rigth == NULL)
+	{
+		if (_node == _min_max_nodes->biggest)	
+		{
+			_node = _end;
+			return *this;
+		}
+		for (; _node != _node->parent->left; _node = _node->parent);
+		_node = _node->parent;
+	}
+	else
+	{
+		// otherwise, if curent node has rigth child, we need to go
+		//	to it and them find smalles (most left) node in this 
+		//	child tree.
+		_node = _node->rigth;
+		for (; _node->left != NULL; _node = _node->left);
+	}
 	return *this;
 }
 
@@ -143,7 +175,7 @@ template<typename T, bool IsConst>
 MapIterator<T, IsConst>	&MapIterator<T, IsConst>::
 operator--()
 {
-	// --_node; TODO
+	// --_node; 
 	return *this;
 }
 
