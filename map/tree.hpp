@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 14:30:15 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/11 17:17:51 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,19 @@
 # include <memory>
 # include <queue>
 # include <iostream>
+# include "map_iterator.hpp"
 
 namespace ft
 {
+
+template<typename T>
+struct TreeBounds
+{
+	TreeBounds() : biggest(NULL), smallest(NULL) { }
+	
+	T	*biggest;
+	T	*smallest;
+};
 
 template<typename T>
 struct Node
@@ -30,6 +40,8 @@ struct Node
 	Node(const Node &source) : data(source.data), parent(source.parent),
 		left(source.left), rigth(source.rigth) { }
 	~Node() { }
+
+	typedef T data_type;
 
 	T		data;
 	Node	*parent;
@@ -45,13 +57,17 @@ template<typename Data, typename Key_from_data,
 class Tree
 {
 	public:
-		typedef Data			data_type;
-		typedef size_t			size_type;
-		typedef Key_from_data	get_key;
-		typedef Compare			compare_keys;
-		typedef Node<data_type>	node_type;
+		typedef Data							data_type;
+		typedef size_t							size_type;
+		typedef Key_from_data					get_key;
+		typedef Compare							compare_keys;
+		typedef Node<data_type>					node_type;
+		typedef	TreeBounds<node_type>			tree_bounds;
 		typedef typename Allocator::template rebind<node_type>::other
-								allocator_type;
+												allocator_type;
+		typedef MapIterator<node_type>			iterator;
+		typedef MapIterator<node_type, true>	const_iterator;
+		// TODO add reverse
 
 		Tree();
 		Tree(const Tree &source);
@@ -59,6 +75,9 @@ class Tree
 	
 		Tree	&operator=(const Tree &source);
 
+		iterator	begin();
+		iterator	end();
+		// TODO add const and reverse
 		void		Add(const data_type &data);
 		void		Delete(const data_type &data);
 		node_type	*Find(const data_type &data);
@@ -66,6 +85,12 @@ class Tree
 		void		Print();
 		void		PrintWidth();
 		size_type	Size();
+
+		void	PrintMinMax()
+		{
+			std::cout << _min_max_nodes.biggest->data << std::endl;
+			std::cout << _min_max_nodes.smallest->data << std::endl;
+		}
 	private:
 		void		Print(node_type *node);
 		void		PrintWidth(node_type *node);
@@ -73,11 +98,14 @@ class Tree
 			const data_type &data);
 		node_type	*Delete(node_type *node, node_type *parent,
 			const data_type &data);
+		void		UpdateMinMaxNodes();
 		void		Destroy(node_type *node);
 		void		FreeNode(node_type *node);
 
 		size_type		_size;
 		node_type		*_tree;
+		tree_bounds		_min_max_nodes;
+		node_type		*_end;
 		allocator_type	_allocator;
 		compare_keys	_compare;
 		get_key			_get_key;
@@ -126,6 +154,7 @@ Tree<Data, Key_from_data, Compare, Allocator>
 &Tree<Data, Key_from_data, Compare, Allocator>::
 operator=(const Tree &source)
 {
+	// TODO
 	// do when iterators
 	// Destroy(_tree);
 	// 
@@ -134,10 +163,29 @@ operator=(const Tree &source)
 
 template<typename Data, typename Key_from_data,
 	typename Compare, typename Allocator>
+typename Tree<Data, Key_from_data, Compare, Allocator>::iterator
+	Tree<Data, Key_from_data, Compare, Allocator>::
+begin()
+{
+	// TODO
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+typename Tree<Data, Key_from_data, Compare, Allocator>::iterator
+	Tree<Data, Key_from_data, Compare, Allocator>::
+end()
+{
+	return _end;
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
 void	Tree<Data, Key_from_data, Compare, Allocator>::
 Add(const data_type &data)
 {
 	_tree = Add(_tree, NULL, data);
+	UpdateMinMaxNodes();
 }
 
 template<typename Data, typename Key_from_data,
@@ -165,6 +213,7 @@ void	Tree<Data, Key_from_data, Compare, Allocator>::
 Delete(const data_type &data)
 {
 	_tree = Delete(_tree, NULL, data);
+	UpdateMinMaxNodes();
 }
 
 template<typename Data, typename Key_from_data,
@@ -214,6 +263,24 @@ Delete(node_type *node, node_type *parent, const data_type &data)
 		return child;
 	}
 	return node;
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+void	Tree<Data, Key_from_data, Compare, Allocator>::
+UpdateMinMaxNodes()
+{
+	if (_tree == NULL)
+	{
+		_min_max_nodes.biggest = NULL;
+		_min_max_nodes.smallest = NULL;
+		return;
+	}
+	node_type	*temp;
+	for (temp = _tree; temp->rigth != NULL; temp = temp->rigth);
+	_min_max_nodes.biggest = temp;
+	for (temp = _tree; temp->left != NULL; temp = temp->left);
+	_min_max_nodes.smallest = temp;
 }
 
 template<typename Data, typename Key_from_data,
