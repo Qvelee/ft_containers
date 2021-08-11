@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/10 17:37:39 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/11 12:04:00 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <functional>
 # include <memory>
 # include <queue>
-# include <iostream> // DELETE
+# include <iostream>
 
 namespace ft
 {
@@ -25,13 +25,10 @@ namespace ft
 template<typename T>
 struct Node
 {
-	Node(const T &data_, Node *parent_)
-	{
-		data = data_;
-		parent = parent_;
-		left = NULL;
-		rigth = NULL;
-	}
+	Node(const T &data_, Node *parent_) : data(data_), parent(parent_),
+		left(NULL), rigth(NULL) { }
+	Node(const Node &source) : data(source.data), parent(source.parent),
+		left(source.left), rigth(source.rigth) { }
 	~Node() { }
 
 	T		data;
@@ -50,7 +47,8 @@ class Tree
 	public:
 		typedef Data		data_type;
 		typedef size_t		size_type;
-		typedef Allocator	allocator_type;
+		typedef typename Allocator::template rebind<Node<data_type> >::other
+							allocator_type;
 
 		Tree();
 		Tree(const Tree &source);
@@ -66,11 +64,12 @@ class Tree
 	private:
 		void			Print(Node<data_type> *node);
 		void			PrintWidth(Node<data_type> *node);
-		Node<data_type>	*_Add(Node<data_type> *node, Node<data_type> *parent,
+		Node<data_type>	*Add(Node<data_type> *node, Node<data_type> *parent,
 			const data_type &data);
-		Node<data_type>	*_Delete(Node<data_type> *node, Node<data_type> *parent,
+		Node<data_type>	*Delete(Node<data_type> *node, Node<data_type> *parent,
 			const data_type &data);
-		void			_Destroy(Node<data_type> *node);
+		void			Destroy(Node<data_type> *node);
+		void			FreeNode(Node<data_type> *node);
 
 		size_type		_size;
 		Node<data_type>	*_tree;
@@ -99,19 +98,19 @@ template<typename Data, typename Key_from_data,
 Tree<Data, Key_from_data, Compare, Allocator>::
 ~Tree()
 {
-	_Destroy(_tree);
+	Destroy(_tree);
 }
 
 template<typename Data, typename Key_from_data,
 	typename Compare, typename Allocator>
 void	Tree<Data, Key_from_data, Compare, Allocator>::
-_Destroy(Node<data_type> *node)
+Destroy(Node<data_type> *node)
 {
 	if (node == NULL)
 		return;
-	_Destroy(node->left);
-	_Destroy(node->rigth);
-	delete node;
+	Destroy(node->left);
+	Destroy(node->rigth);
+	FreeNode(node);
 }
 
 template<typename Data, typename Key_from_data,
@@ -120,7 +119,10 @@ Tree<Data, Key_from_data, Compare, Allocator>
 &Tree<Data, Key_from_data, Compare, Allocator>::
 operator=(const Tree &source)
 {
-	// TODO
+	// do when iterators
+	// Destroy(_tree);
+	// 
+	// return *this;
 }
 
 template<typename Data, typename Key_from_data,
@@ -128,23 +130,24 @@ template<typename Data, typename Key_from_data,
 void	Tree<Data, Key_from_data, Compare, Allocator>::
 Add(const data_type &data)
 {
-	_tree = _Add(_tree, NULL, data);
+	_tree = Add(_tree, NULL, data);
 }
 
 template<typename Data, typename Key_from_data,
 	typename Compare, typename Allocator>
 Node<Data>	*Tree<Data, Key_from_data, Compare, Allocator>::
-_Add(Node<data_type> *node, Node<data_type> *parent, const data_type &data)
+Add(Node<data_type> *node, Node<data_type> *parent, const data_type &data)
 {
 	if (node == NULL)
 	{
-		node = new Node<data_type>(data, parent);
+		node = _allocator.allocate(sizeof(Node<data_type>));
+		_allocator.construct(node, Node<data_type>(data, parent));
 		return node;
 	}
 	if (data < node->data) // TODO add compare function
-		node->left = _Add(node->left, node, data); 
+		node->left = Add(node->left, node, data); 
 	if (data > node->data) // TODO add compare function
-		node->rigth = _Add(node->rigth, node, data);
+		node->rigth = Add(node->rigth, node, data);
 	return node;
 }
 
@@ -153,40 +156,41 @@ template<typename Data, typename Key_from_data,
 void	Tree<Data, Key_from_data, Compare, Allocator>::
 Delete(const data_type &data)
 {
-	_tree = _Delete(_tree, NULL, data); // TODO add rigth delete (allocator)
+	_tree = Delete(_tree, NULL, data);
 }
 
 template<typename Data, typename Key_from_data,
 	typename Compare, typename Allocator>
 Node<Data>	*Tree<Data, Key_from_data, Compare, Allocator>::
-_Delete(Node<data_type> *node, Node<data_type> *parent, const data_type &data)
+Delete(Node<data_type> *node, Node<data_type> *parent, const data_type &data)
 {
 	if (node == NULL)
 		return node;
 	if (data < node->data)
-		node->left = _Delete(node->left, node, data);
+		node->left = Delete(node->left, node, data);
 	else if (data > node->data)
-		node->rigth = _Delete(node->rigth, node, data);
-	else if (node->left == NULL || node->rigth == NULL)
+		node->rigth = Delete(node->rigth, node, data);
+	else if (node->left == NULL || node->rigth == NULL) // if del. element has 0 or 1 child
 	{
 		Node<data_type>	*temp;
 		
 		temp = node->left ? node->left : node->rigth;
 		if (temp != NULL)
 			temp->parent = parent;
-		delete node;
+		FreeNode(node);
 		return temp;
 	}
-	else
+	else // if del. element has 2 childs
 	{
 		Node<data_type>	*child = node->rigth;
 
 		for (; child->left != NULL; child = child->left);
 		if (child->parent != node)
+		{
 			child->parent->left = child->rigth;
-		child->left = node->left;
-		if (child->parent != node)
 			child->rigth = node->rigth;
+		}
+		child->left = node->left;
 		child->parent = node->parent;
 		if (child->left != NULL)
 			child->left->parent = child;
@@ -196,7 +200,7 @@ _Delete(Node<data_type> *node, Node<data_type> *parent, const data_type &data)
 			node->parent->rigth = child;
 		else
 			node->parent->left = child;
-		delete node;
+		FreeNode(node);
 		return child;
 	}
 	return node;
@@ -268,6 +272,15 @@ PrintWidth(Node<data_type> *node)
 		}
 		std::cout << std::endl;
 	}
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+void	Tree<Data, Key_from_data, Compare, Allocator>::
+FreeNode(Node<data_type> *node)
+{
+	_allocator.destroy(node);
+	_allocator.deallocate(node, sizeof(node));
 }
 
 } // namespace ft
