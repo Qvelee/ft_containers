@@ -6,12 +6,13 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 13:13:04 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 14:32:22 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/11 20:23:53 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "tree.hpp"
 # include <functional>
+# include <map>
 
 using namespace ft;
 
@@ -52,24 +53,24 @@ int		main()
 	tree.PrintWidth();
 	std::cout << "----------\n";
 	tree.Print();
-	std::cout << "Size: " << tree.Size() << std::endl;
-	std::cout << "----------\n";
-	tree.Delete(10);
-	tree.Print();
-	std::cout << "Size: " << tree.Size() << std::endl;
-	std::cout << "----------\n";
-	tree.PrintWidth();
-	std::cout << "Data found: " << tree.Find(6)->data << std::endl;
-	std::cout << "Data found: ";
-	if (tree.Find(99) == NULL)
-		std::cout << "no\n";
+	// std::cout << "Size: " << tree.Size() << std::endl;
+	// std::cout << "----------\n";
+	// tree.Delete(10);
+	// tree.Print();
+	// std::cout << "Size: " << tree.Size() << std::endl;
+	// std::cout << "----------\n";
+	// tree.PrintWidth();
+	// std::cout << "Data found: " << tree.Find(6)->data << std::endl;
+	// std::cout << "Data found: ";
+	// if (tree.Find(99) == NULL)
+	// 	std::cout << "no\n";
 	
 
-	Tree<int, Select<int>, std::less<int> >	tree2;
-	tree2.Add(4);
-	tree2.Delete(4);
-	tree2.Delete(5);
-	std::cout << "Size: " << tree2.Size() << std::endl;
+	// Tree<int, Select<int>, std::less<int> >	tree2;
+	// tree2.Add(4);
+	// tree2.Delete(4);
+	// tree2.Delete(5);
+	// std::cout << "Size: " << tree2.Size() << std::endl;
 	// tree.Delete(20);
 	// tree.Print();
 	// // std::cout << "----------\n";
@@ -77,6 +78,29 @@ int		main()
 	// // tree.Print();
 	// std::cout << "----------\n";
 	// tree.PrintWidth();
+	// tree.PrintMinMax();
 
+
+	// for (auto it = tree.begin(); it != tree.end(); ++it)
+	// {
+		// std::cout << *it << std::endl;
+	// }
+	// auto it = tree.begin();
+	// std::cout << *it++ << std::endl;
+	// std::cout << *it << std::endl;
+
+	// auto it = tree.end();
+	// --it;
+	// std::cout << *it << std::endl;
+	// for (auto it = --tree.end(); it != tree.begin(); --it)
+	// {
+	// 	std::cout << *it << std::endl;
+	// }
+	auto it = --tree.end();
+	std::cout << *it-- << std::endl;
+	std::cout << *it << std::endl;
+	it++;
+	std::cout << *it << std::endl;
+	
 	return 0;
 }
