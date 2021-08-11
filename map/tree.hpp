@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 13:30:31 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/11 14:30:15 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ class Tree
 		node_type	*Find(node_type *node, const data_type &data);
 		void		Print();
 		void		PrintWidth();
+		size_type	Size();
 	private:
 		void		Print(node_type *node);
 		void		PrintWidth(node_type *node);
@@ -148,6 +149,7 @@ Add(node_type *node, node_type *parent, const data_type &data)
 	{
 		node = _allocator.allocate(sizeof(node_type));
 		_allocator.construct(node, node_type(data, parent));
+		++_size;
 		return node;
 	}
 	if (_compare(_get_key(data), _get_key(node->data)))
@@ -183,6 +185,7 @@ Delete(node_type *node, node_type *parent, const data_type &data)
 		temp = node->left ? node->left : node->rigth;
 		if (temp != NULL)
 			temp->parent = parent;
+		--_size;
 		FreeNode(node);
 		return temp;
 	}
@@ -206,6 +209,7 @@ Delete(node_type *node, node_type *parent, const data_type &data)
 			node->parent->rigth = child;
 		else if (node->parent != NULL)
 			node->parent->left = child;
+		--_size;
 		FreeNode(node);
 		return child;
 	}
@@ -292,6 +296,15 @@ PrintWidth(node_type *node)
 		}
 		std::cout << std::endl;
 	}
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+typename Tree<Data, Key_from_data, Compare, Allocator>::size_type
+Tree<Data, Key_from_data, Compare, Allocator>::
+Size()
+{
+	return _size;
 }
 
 template<typename Data, typename Key_from_data,
