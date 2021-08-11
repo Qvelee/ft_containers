@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 13:05:42 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/11 13:30:31 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ class Tree
 		void		Add(const data_type &data);
 		void		Delete(const data_type &data);
 		node_type	*Find(const data_type &data);
+		node_type	*Find(node_type *node, const data_type &data);
 		void		Print();
 		void		PrintWidth();
 	private:
@@ -216,7 +217,21 @@ template<typename Data, typename Key_from_data,
 Node<Data>	*Tree<Data, Key_from_data, Compare, Allocator>::
 Find(const data_type &data)
 {
-	// TODO
+	return Find(_tree, data);
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+Node<Data>	*Tree<Data, Key_from_data, Compare, Allocator>::
+Find(node_type *node, const data_type &data)
+{
+	if (node == NULL)
+		return NULL;
+	if (_compare(_get_key(data), _get_key(node->data)))
+		node = Find(node->left, data);
+	else if (_compare(_get_key(node->data), _get_key(data)))
+		node = Find(node->rigth, data);
+	return node;
 }
 
 template<typename Data, typename Key_from_data,

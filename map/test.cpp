@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 13:13:04 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 12:59:56 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/11 13:31:52 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,10 @@ int		main()
 	tree.Print();
 	std::cout << "----------\n";
 	tree.PrintWidth();
+	std::cout << "Data found: " << tree.Find(6)->data << std::endl;
+	std::cout << "Data found: ";
+	if (tree.Find(99) == NULL)
+		std::cout << "no\n";
 	
 	// tree.Delete(20);
 	// tree.Print();
