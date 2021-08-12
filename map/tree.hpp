@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 16:03:53 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 17:58:36 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@ template<typename T>
 struct TreeBounds
 {
 	TreeBounds() : biggest(NULL), smallest(NULL) { }
+	TreeBounds(const TreeBounds &source) { *this = source; }
+	
+	TreeBounds	&operator=(const TreeBounds &source)
+	{
+		if (this == &source)
+			return *this;
+		biggest = source.biggest;
+		smallest = source.smallest;
+		return *this;
+	}
 	
 	T	*biggest;
 	T	*smallest;
@@ -93,6 +103,7 @@ class Tree
 		node_type				*Find(node_type *node, const data_type &data);
 		void					Print();
 		size_type				Size() const;
+		void					swap(Tree &source);
 		allocator_type			get_allocator() const;
 	private:
 		void		Print(node_type *node);
@@ -417,6 +428,25 @@ Tree<Data, Key_from_data, Compare, Allocator>::
 Size() const
 {
 	return _size;
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+void	Tree<Data, Key_from_data, Compare, Allocator>::
+swap(Tree &source)
+{
+	node_type	*temp_node_pointer;
+	tree_bounds	temp_bounds;
+
+	temp_node_pointer = _tree;
+	_tree = source._tree;
+	source._tree = temp_node_pointer;
+	_size ^= source._size; // XOR swap
+	source._size ^= _size;
+	_size ^= source._size;
+	temp_bounds = source._min_max_nodes;
+	_min_max_nodes = source._min_max_nodes;
+	source._min_max_nodes = temp_bounds;
 }
 
 template<typename Data, typename Key_from_data,
