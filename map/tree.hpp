@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 18:04:47 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 18:19:39 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,7 @@ class Tree
 		const_reverse_iterator	rend() const;
 		pair<iterator, bool>	Add(const data_type &data);
 		void					Delete(const data_type &data);
-		node_type				*Find(const data_type &data);
-		node_type				*Find(node_type *node, const data_type &data);
+		iterator				Find(const data_type &data);
 		void					Print();
 		size_type				Size() const;
 		void					swap(Tree &source);
@@ -113,6 +112,7 @@ class Tree
 			const data_type &data, pair<iterator, bool>	&inserted_element);
 		node_type	*Delete(node_type *node, node_type *parent,
 			const data_type &data);
+		node_type	*Find(node_type *node, const data_type &data);
 		void		UpdateMinMaxNodes();
 		void		Destroy(node_type *node);
 		void		FreeNode(node_type *node);
@@ -377,10 +377,15 @@ UpdateMinMaxNodes()
 
 template<typename Data, typename Key_from_data,
 	typename Compare, typename Allocator>
-Node<Data>	*Tree<Data, Key_from_data, Compare, Allocator>::
+typename Tree<Data, Key_from_data, Compare, Allocator>::iterator
+Tree<Data, Key_from_data, Compare, Allocator>::
 Find(const data_type &data)
 {
-	return Find(_tree, data);
+	node_type	*finded_node = Find(_tree, data);
+
+	if (finded_node == NULL)
+		return end();
+	return iterator(finded_node, _end, &_min_max_nodes);
 }
 
 template<typename Data, typename Key_from_data,
