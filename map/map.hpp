@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 12:43:56 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/10 11:54:50 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 10:44:28 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ class map
 		mapped_type &operator[](const key_type &key_);
 
 		iterator				begin();
-		const_iterator			begin();
+		const_iterator			begin() const;
 		iterator				end();
-		const_iterator			end();
+		const_iterator			end() const;
 		reverse_iterator		rbegin();
 		const_reverse_iterator	rbegin() const;
 		reverse_iterator		rend();
