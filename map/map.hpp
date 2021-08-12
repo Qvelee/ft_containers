@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 12:43:56 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 20:13:02 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 20:28:34 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,14 +362,14 @@ template<typename key, typename T, typename Compare, typename Allocator>
 typename map<key, T, Compare, Allocator>::iterator	map<key, T, Compare, Allocator>::
 upper_bound(const key_type &key_)
 {
-	// TODO
+	return _tree.upper_bound(make_pair(key_, mapped_type()));
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>
 typename map<key, T, Compare, Allocator>::const_iterator	map<key, T, Compare, Allocator>::
 upper_bound(const key_type &key_) const
 {
-	// TODO
+	return _tree.upper_bound(make_pair(key_, mapped_type()));
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>

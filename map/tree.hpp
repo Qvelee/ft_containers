@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 20:22:39 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 20:28:09 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ class Tree
 		void					clear();
 		iterator				lower_bound(const data_type &data);
 		const_iterator			lower_bound(const data_type &data) const;
+		iterator				upper_bound(const data_type &data);
+		const_iterator			upper_bound(const data_type &data) const;
 		allocator_type			get_allocator() const;
 	private:
 		void		Print(node_type *node);
@@ -505,6 +507,34 @@ lower_bound(const data_type &data) const
 
 	for (it = begin(); it != end(); ++it)
 		if (!_compare(_get_key(*it), _get_key(data)))
+			break ;
+	return it;
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+typename Tree<Data, Key_from_data, Compare, Allocator>::iterator
+Tree<Data, Key_from_data, Compare, Allocator>::
+upper_bound(const data_type &data)
+{
+	iterator it;
+
+	for (it = begin(); it != end(); ++it)
+		if (_compare(_get_key(data), _get_key(*it)))
+			break ;
+	return it;
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+typename Tree<Data, Key_from_data, Compare, Allocator>::const_iterator
+Tree<Data, Key_from_data, Compare, Allocator>::
+upper_bound(const data_type &data) const
+{
+	const_iterator it;
+
+	for (it = begin(); it != end(); ++it)
+		if (!_compare(_get_key(data), _get_key(*it)))
 			break ;
 	return it;
 }
