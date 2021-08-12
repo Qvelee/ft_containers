@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 12:43:56 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 15:17:27 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 16:57:58 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,14 +256,14 @@ pair<typename map<key, T, Compare, Allocator>::iterator, bool>
 map<key, T, Compare, Allocator>::
 insert(const value_type &value)
 {
-	// TODO
+	return _tree.Add(value);
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>
 typename map<key, T, Compare, Allocator>::iterator map<key, T, Compare, Allocator>::
-insert(iterator position, const value_type &value)
+insert(iterator, const value_type &value)
 {
-	// TODO
+	return _tree.Add(value).first;
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>
@@ -271,7 +271,10 @@ template<typename InputIterator>
 void	map<key, T, Compare, Allocator>::
 insert(InputIterator first, InputIterator last)
 {
-	// TODO
+	if (first == last)
+		return;
+	for (; first != last; ++first)
+		_tree.Add(*first);
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>
