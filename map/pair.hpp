@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 12:51:23 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 16:30:20 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 22:09:48 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,13 @@ operator=(const pair &source)
 }
 
 template<typename T1, typename T2>
+pair<T1, T2>
+make_pair(T1 first, T2 second)
+{
+	return pair<T1, T2>(first, second);
+}
+
+template<typename T1, typename T2>
 bool
 operator==(const pair<T1, T2> &left, const pair<T1, T2> &rigth);
 
@@ -88,13 +95,6 @@ operator> (const pair<T1, T2> &left, const pair<T1, T2> &rigth);
 template<typename T1, typename T2>
 bool
 operator>=(const pair<T1, T2> &left, const pair<T1, T2> &rigth);
-
-template<typename T1, typename T2>
-pair<T1, T2>
-make_pair(T1 first, T2 second)
-{
-	return pair<T1, T2>(first, second);
-}
 
 } // namespace ft
 
