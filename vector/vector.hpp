@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:37:15 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/03 20:18:32 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 12:07:09 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,8 @@ template<typename T, typename Allocator>
 vector<T, Allocator>	&vector<T, Allocator>::
 operator=(const vector &source)
 {
+	if (this == &source)
+		return *this;
 	for (size_type i = 0; i < _size; ++i)
 		_allocator.destroy(_array + i);
 	_size = 0;

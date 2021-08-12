@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 16:04:34 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/02 21:12:13 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 12:07:23 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ template<typename T, bool IsConst>
 VectorIterator<T, IsConst>	&VectorIterator<T, IsConst>::
 operator=(const VectorIterator &source)
 {
+	if (this == &source)
+		return *this;
 	_pointer = source._pointer;
 	return *this;
 }
