@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 12:43:56 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 20:28:34 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 21:23:36 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@ template<typename key, typename T, typename Compare = std::less<key>,
 class map
 {
 	public:
+		struct ValueCompare;
 		typedef key											key_type;
 		typedef T											mapped_type;
 		typedef	pair<const key_type, mapped_type>			value_type;
 		typedef Compare										key_compare;
-		typedef	Compare										value_compare; // ????
+		typedef	ValueCompare								value_compare;
 		typedef Allocator									allocator_type;
 		typedef value_type&									reference;
 		typedef const value_type&							const_reference;
@@ -109,6 +110,15 @@ class map
 		allocator_type			get_allocator() const;
 	private:
 		base_tree	_tree;
+	public:
+		struct ValueCompare
+		{
+			key_compare	compare;
+			bool	operator()(const value_type &first, const value_type &second)
+			{
+				return compare(first.first, second.first);
+			}
+		};
 };
 
 template<typename key, typename T, typename Compare, typename Allocator>
@@ -311,14 +321,14 @@ template<typename key, typename T, typename Compare, typename Allocator>
 typename map<key, T, Compare, Allocator>::key_compare	map<key, T, Compare, Allocator>::
 key_comp() const
 {
-	// TODO
+	return key_compare();
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>
 typename map<key, T, Compare, Allocator>::value_compare	map<key, T, Compare, Allocator>::
 value_comp() const
 {
-	// TODO
+	return value_compare();
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>
@@ -378,7 +388,7 @@ pair<typename map<key, T, Compare, Allocator>::iterator,
 map<key, T, Compare, Allocator>::
 equal_range(const key_type &key_)
 {
-	// TODO
+	return make_pair(lower_bound(key_), upper_bound(key_));
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>
@@ -387,7 +397,7 @@ pair<typename map<key, T, Compare, Allocator>::const_iterator,
 map<key, T, Compare, Allocator>::
 equal_range(const key_type &key_) const
 {
-	// TODO
+	return make_pair(lower_bound(key_), upper_bound(key_));
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>
