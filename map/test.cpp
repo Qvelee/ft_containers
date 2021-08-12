@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 13:13:04 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 20:23:53 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 12:05:59 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int		main()
 	std::cout << "Size: " << tree.Size() << std::endl;
 	for (int i = 0; i < sizeof(array) / sizeof(array[0]); ++i)
 		tree.Add(array[i]);
-	tree.PrintWidth();
 	std::cout << "----------\n";
 	tree.Print();
 	// std::cout << "Size: " << tree.Size() << std::endl;
@@ -96,11 +95,21 @@ int		main()
 	// {
 	// 	std::cout << *it << std::endl;
 	// }
-	auto it = --tree.end();
-	std::cout << *it-- << std::endl;
-	std::cout << *it << std::endl;
-	it++;
-	std::cout << *it << std::endl;
+	// auto it = --tree.end();
+	// std::cout << *it-- << std::endl;
+	// std::cout << *it << std::endl;
+	// it++;
+	// std::cout << *it << std::endl;
 	
+	Tree<int, Select<int>, std::less<int> >	tree2;
+	tree2.Add(4);
+	tree2.Add(5);
+	tree2.Add(6);
+
+	tree = tree;
+	for (auto it = tree.begin(); it != tree.end(); ++it)
+	{
+		std::cout << *it << std::endl;
+	}
 	return 0;
 }
