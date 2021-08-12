@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 15:16:32 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 16:03:53 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <iostream>
 # include "map_iterator.hpp"
 # include "reverse_iterator.hpp"
+# include "pair.hpp"
 
 namespace ft
 {
@@ -86,7 +87,7 @@ class Tree
 		const_reverse_iterator	rbegin() const;
 		reverse_iterator		rend();
 		const_reverse_iterator	rend() const;
-		void					Add(const data_type &data);
+		pair<iterator, bool>	Add(const data_type &data);
 		void					Delete(const data_type &data);
 		node_type				*Find(const data_type &data);
 		node_type				*Find(node_type *node, const data_type &data);
@@ -97,7 +98,7 @@ class Tree
 		void		Print(node_type *node);
 		void		PrintWidth(node_type *node);
 		node_type	*Add(node_type *node, node_type *parent,
-			const data_type &data);
+			const data_type &data, pair<iterator, bool>	&inserted_element);
 		node_type	*Delete(node_type *node, node_type *parent,
 			const data_type &data);
 		void		UpdateMinMaxNodes();
@@ -248,29 +249,41 @@ rend() const
 
 template<typename Data, typename Key_from_data,
 	typename Compare, typename Allocator>
-void	Tree<Data, Key_from_data, Compare, Allocator>::
+pair<typename Tree<Data, Key_from_data, Compare, Allocator>::iterator, bool>
+Tree<Data, Key_from_data, Compare, Allocator>::
 Add(const data_type &data)
 {
-	_tree = Add(_tree, NULL, data);
+	pair<iterator, bool>	inserted_element;
+	
+	_tree = Add(_tree, NULL, data, inserted_element);
 	UpdateMinMaxNodes();
+	return inserted_element;
 }
 
 template<typename Data, typename Key_from_data,
 	typename Compare, typename Allocator>
 Node<Data>	*Tree<Data, Key_from_data, Compare, Allocator>::
-Add(node_type *node, node_type *parent, const data_type &data)
+Add(node_type *node, node_type *parent, const data_type &data,
+	pair<iterator, bool> &inserted_element)
 {
 	if (node == NULL)
 	{
 		node = _allocator.allocate(sizeof(node_type));
 		_allocator.construct(node, node_type(data, parent));
 		++_size;
+		inserted_element.first = iterator(node, _end, &_min_max_nodes);
+		inserted_element.second = true;
 		return node;
 	}
 	if (_compare(_get_key(data), _get_key(node->data)))
-		node->left = Add(node->left, node, data);
+		node->left = Add(node->left, node, data, inserted_element);
 	else if (_compare(_get_key(node->data), _get_key(data)))
-		node->rigth = Add(node->rigth, node, data);
+		node->rigth = Add(node->rigth, node, data, inserted_element);
+	else // element equal
+	{
+		inserted_element.first = iterator(node, _end, &_min_max_nodes);
+		inserted_element.second = false;
+	}
 	return node;
 }
 
