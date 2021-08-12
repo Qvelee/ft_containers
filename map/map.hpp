@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 12:43:56 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 21:23:36 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 22:12:27 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ struct SelectFirst
 };
 
 template<typename key, typename T, typename Compare = std::less<key>,
-	typename Allocator = std::allocator<pair<const key, T>>>
+	typename Allocator = std::allocator<pair<const key, T> > >
 class map
 {
 	public:
