@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 12:43:56 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 17:55:59 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 18:04:32 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,7 +311,7 @@ template<typename key, typename T, typename Compare, typename Allocator>
 void	map<key, T, Compare, Allocator>::
 clear()
 {
-	// TODO
+	_tree.clear();
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>

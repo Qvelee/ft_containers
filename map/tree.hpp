@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 17:58:36 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 18:04:47 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ class Tree
 		void					Print();
 		size_type				Size() const;
 		void					swap(Tree &source);
+		void					clear();
 		allocator_type			get_allocator() const;
 	private:
 		void		Print(node_type *node);
@@ -447,6 +448,16 @@ swap(Tree &source)
 	temp_bounds = source._min_max_nodes;
 	_min_max_nodes = source._min_max_nodes;
 	source._min_max_nodes = temp_bounds;
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+void	Tree<Data, Key_from_data, Compare, Allocator>::
+clear()
+{
+	Destroy(_tree);
+	_tree = NULL;
+	_size = 0;	
 }
 
 template<typename Data, typename Key_from_data,
