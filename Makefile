@@ -6,7 +6,7 @@
 #    By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/14 16:22:01 by nelisabe          #+#    #+#              #
-#    Updated: 2021/08/03 19:13:02 by nelisabe         ###   ########.fr        #
+#    Updated: 2021/08/12 12:24:58 by nelisabe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ FLAGS ?=		-g -std=c++98 -Wall -Wextra -Werror
 
 MODE ?=			0
 
-INCLUDES ?=		-I. -I./vector/ -I./stack/
+INCLUDES ?=		-I. -I./iterators/ -I./vector/ -I./stack/
 
 #SRC DIRS
 
