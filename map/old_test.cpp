@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.cpp                                           :+:      :+:    :+:   */
+/*   old_test.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 13:13:04 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 13:17:05 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 16:05:42 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int		main()
 		tree.Add(array[i]);
 	std::cout << "----------\n";
 	tree.Print();
+	std::cout << *tree.Add(11).first << std::endl;
 	// std::cout << "Size: " << tree.Size() << std::endl;
 	// std::cout << "----------\n";
 	// tree.Delete(10);
@@ -112,29 +113,29 @@ int		main()
 		// std::cout << *it << std::endl;
 	// }
 	
-	for (Tree<int, Select<int>, std::less<int> >::iterator it =
-		tree.begin(); it != tree.end(); ++it)
-	{
-		std::cout << *it << std::endl;
-	}
-	std::cout << "-----------\n";
-	for (Tree<int, Select<int>, std::less<int> >::const_iterator it =
-		tree.begin(); it != tree.end(); ++it)
-	{
-		std::cout << *it << std::endl;
-	}
-	std::cout << "-----------\n";
-	for (Tree<int, Select<int>, std::less<int> >::reverse_iterator it =
-		tree.rbegin(); it != tree.rend(); ++it)
-	{
-		std::cout << *it << std::endl;
-	}
-	std::cout << "-----------\n";
-	for (Tree<int, Select<int>, std::less<int> >::const_reverse_iterator it =
-		tree.rbegin(); it != tree.rend(); ++it)
-	{
-		std::cout << *it << std::endl;
-	}
+	// for (Tree<int, Select<int>, std::less<int> >::iterator it =
+	// 	tree.begin(); it != tree.end(); ++it)
+	// {
+	// 	std::cout << *it << std::endl;
+	// }
+	// std::cout << "-----------\n";
+	// for (Tree<int, Select<int>, std::less<int> >::const_iterator it =
+	// 	tree.begin(); it != tree.end(); ++it)
+	// {
+	// 	std::cout << *it << std::endl;
+	// }
+	// std::cout << "-----------\n";
+	// for (Tree<int, Select<int>, std::less<int> >::reverse_iterator it =
+	// 	tree.rbegin(); it != tree.rend(); ++it)
+	// {
+	// 	std::cout << *it << std::endl;
+	// }
+	// std::cout << "-----------\n";
+	// for (Tree<int, Select<int>, std::less<int> >::const_reverse_iterator it =
+	// 	tree.rbegin(); it != tree.rend(); ++it)
+	// {
+	// 	std::cout << *it << std::endl;
+	// }
 
 	return 0;
 }
