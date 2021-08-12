@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:10:59 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 13:16:47 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 16:44:58 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ template<typename T, bool IsConst>
 typename MapIterator<T, IsConst>::pointer	MapIterator<T, IsConst>::
 operator->()
 {
-	return _node->data;
+	return &_node->data;
 }
 
 template<typename T, bool IsConst>
