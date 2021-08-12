@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 12:43:56 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 16:57:58 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 17:32:13 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,8 +271,6 @@ template<typename InputIterator>
 void	map<key, T, Compare, Allocator>::
 insert(InputIterator first, InputIterator last)
 {
-	if (first == last)
-		return;
 	for (; first != last; ++first)
 		_tree.Add(*first);
 }
@@ -281,21 +279,25 @@ template<typename key, typename T, typename Compare, typename Allocator>
 void	map<key, T, Compare, Allocator>::
 erase(iterator position)
 {
-	// TODO
+	_tree.Delete(*position);
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>
 typename map<key, T, Compare, Allocator>::size_type	map<key, T, Compare, Allocator>::
 erase(const key_type &key_)
 {
-	// TODO
+	size_type	diff = _tree.Size();
+
+	_tree.Delete(make_pair(key_, mapped_type()));
+	return diff - _tree.Size();
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>
 void	map<key, T, Compare, Allocator>::
 erase(iterator first, iterator last)
 {
-	// TODO
+	while (first != last)
+		_tree.Delete(*first++);
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>
