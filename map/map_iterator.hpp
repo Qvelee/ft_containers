@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:10:59 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 12:06:45 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 13:16:47 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,13 @@
 # define MAP_ITERATOR_HPP
 
 # include "iterator_traits.hpp"
+# include "conditional.hpp"
 # include "tree.hpp"
 
 namespace ft
 {
 
 using std::bidirectional_iterator_tag;
-
-template<bool B, typename T1, typename T2>
-struct conditional
-{ // if flag is false
-	typedef T2 type;
-};
-
-template<typename T1, typename T2>
-struct conditional<true, T1, T2>
-{ // if flag is true specialization
-	typedef T1 type;
-};
 
 template<typename T>
 struct TreeBounds;
@@ -42,16 +31,14 @@ class MapIterator
 	public:
 		typedef typename conditional<IsConst, const T, T>::type	conditional_t;
 		typedef conditional_t							value_type;
-		// typedef typename conditional_t::data_type	data_type;
 		typedef typename conditional<IsConst, const typename conditional_t::data_type,
 			typename conditional_t::data_type>::type	data_type;
-		typedef conditional_t*							pointer;
-		typedef conditional_t&							reference;
+		typedef data_type*								pointer;
+		typedef data_type&								reference;
 		typedef bidirectional_iterator_tag				iterator_category;
 		typedef std::ptrdiff_t							difference_type;
 		typedef typename conditional<IsConst, const TreeBounds<T>,
 			TreeBounds<T> >::type						tree_bounds;
-		// typedef TreeBounds<conditional_t>				tree_bounds;
 
 		MapIterator();
 		MapIterator(conditional_t *node,  conditional_t *end, tree_bounds *min_max_nodes);
@@ -61,8 +48,8 @@ class MapIterator
 		MapIterator		&operator=(const MapIterator &source);
 		bool			operator==(const MapIterator &right) const;
 		bool			operator!=(const MapIterator &right) const;
-		data_type		&operator*();
-		data_type		*operator->();
+		reference		operator*();
+		pointer			operator->();
 		MapIterator		&operator++();
 		MapIterator		operator++(int);
 		MapIterator		&operator--();
@@ -121,14 +108,14 @@ operator!=(const MapIterator &rigth) const
 }
 
 template<typename T, bool IsConst>
-typename MapIterator<T, IsConst>::data_type	&MapIterator<T, IsConst>::
+typename MapIterator<T, IsConst>::reference	MapIterator<T, IsConst>::
 operator*()
 {
 	return _node->data;
 }
 
 template<typename T, bool IsConst>
-typename MapIterator<T, IsConst>::data_type	*MapIterator<T, IsConst>::
+typename MapIterator<T, IsConst>::pointer	MapIterator<T, IsConst>::
 operator->()
 {
 	return _node->data;
@@ -211,7 +198,7 @@ template<typename T, bool IsConst>
 MapIterator<T, IsConst>::
 operator MapIterator<T, true>()
 {
-	return MapIterator<T, true>(_node);
+	return MapIterator<T, true>(_node, _end, _min_max_nodes);
 }
 
 } // namespace ft

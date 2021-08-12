@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 12:06:53 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 13:03:22 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <memory>
 # include <iostream>
 # include "map_iterator.hpp"
+# include "reverse_iterator.hpp"
 
 namespace ft
 {
@@ -67,7 +68,8 @@ class Tree
 												allocator_type;
 		typedef MapIterator<node_type>			iterator;
 		typedef MapIterator<node_type, true>	const_iterator;
-		// TODO add reverse
+		typedef ReverseIterator<iterator>		reverse_iterator;
+		typedef ReverseIterator<const_iterator>	const_reverse_iterator;
 
 		Tree();
 		Tree(const Tree &source);
@@ -75,23 +77,20 @@ class Tree
 	
 		Tree	&operator=(const Tree &source);
 
-		iterator		begin();
-		const_iterator	begin() const;
-		iterator		end();
-		const_iterator	end() const;
-		// TODO and reverse
-		void			Add(const data_type &data);
-		void			Delete(const data_type &data);
-		node_type		*Find(const data_type &data);
-		node_type		*Find(node_type *node, const data_type &data);
-		void			Print();
-		size_type		Size();
-
-		void	PrintMinMax()
-		{
-			std::cout << _min_max_nodes.biggest->data << std::endl;
-			std::cout << _min_max_nodes.smallest->data << std::endl;
-		}
+		iterator				begin();
+		const_iterator			begin() const;
+		iterator				end();
+		const_iterator			end() const;
+		reverse_iterator		rbegin();
+		const_reverse_iterator	rbegin() const;
+		reverse_iterator		rend();
+		const_reverse_iterator	rend() const;
+		void					Add(const data_type &data);
+		void					Delete(const data_type &data);
+		node_type				*Find(const data_type &data);
+		node_type				*Find(node_type *node, const data_type &data);
+		void					Print();
+		size_type				Size();
 	private:
 		void		Print(node_type *node);
 		void		PrintWidth(node_type *node);
@@ -205,6 +204,42 @@ typename Tree<Data, Key_from_data, Compare, Allocator>::const_iterator
 end() const
 {
 	return const_iterator(_end, _end, &_min_max_nodes);
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+typename Tree<Data, Key_from_data, Compare, Allocator>::reverse_iterator
+	Tree<Data, Key_from_data, Compare, Allocator>::
+rbegin()
+{
+	return reverse_iterator(end());
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+typename Tree<Data, Key_from_data, Compare, Allocator>::const_reverse_iterator
+	Tree<Data, Key_from_data, Compare, Allocator>::
+rbegin() const
+{
+	return const_reverse_iterator(end());
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+typename Tree<Data, Key_from_data, Compare, Allocator>::reverse_iterator
+	Tree<Data, Key_from_data, Compare, Allocator>::
+rend()
+{
+	return reverse_iterator(begin());
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+typename Tree<Data, Key_from_data, Compare, Allocator>::const_reverse_iterator
+	Tree<Data, Key_from_data, Compare, Allocator>::
+rend() const
+{
+	return const_reverse_iterator(begin());
 }
 
 template<typename Data, typename Key_from_data,

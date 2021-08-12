@@ -14,6 +14,7 @@
 # define REVERSE_ITARATOR_HPP
 
 # include "vector_iterator.hpp"
+# include "map_iterator.hpp"
 
 namespace ft
 {
@@ -49,6 +50,9 @@ class ReverseIterator
 		template<typename T>
 		operator ReverseIterator<VectorIterator<T, true> >()
 		{ return ReverseIterator<VectorIterator<T, true> >(_iterator); }
+		template<typename T>
+		operator ReverseIterator<MapIterator<T, true> >()
+		{ return ReverseIterator<MapIterator<T, true> >(_iterator); }
 	private:
 		iterator_type	_iterator;
 };
