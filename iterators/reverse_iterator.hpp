@@ -166,7 +166,7 @@ template<typename I>
 typename ReverseIterator<I>::pointer ReverseIterator<I>::
 operator->() const
 {
-	return &(*_iterator);
+	return &(operator*());
 }
 
 template<typename I>
