@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 12:51:23 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/04 14:07:47 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 16:26:12 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,7 @@ struct pair
 
 template<typename T1, typename T2>
 pair<T1, T2>::
-pair()
-{
-	first = T1();
-	second = T2();
-}
+pair() : first(T1()), second(T2()) { }
 
 template<typename T1, typename T2>
 template<typename U, typename V>
@@ -56,11 +52,8 @@ pair(const pair<U, V> &source)
 
 template<typename T1, typename T2>
 pair<T1, T2>::
-pair(const first_type &fvalue, const second_type &svalue)
-{
-	first(fvalue);
-	second(svalue);
-}
+pair(const first_type &fvalue, const second_type &svalue) :
+	first(fvalue), second(svalue) { }
 
 template<typename T1, typename T2>
 pair<T1, T2>::
