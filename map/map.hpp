@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 12:43:56 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 18:25:33 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 19:55:59 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,14 +153,7 @@ template<typename key, typename T, typename Compare, typename Allocator>
 typename map<key, T, Compare, Allocator>::mapped_type	&map<key, T, Compare, Allocator>::
 operator[](const key_type &key_)
 {
-	// Node<value_type>	*node;
-
-	// node = _tree.Find(make_pair(key_, mapped_type()));
-	// if (node != NULL)
-	// {
-	// 	return node->data.second;
-	// }
-	// TODO
+	return (*((insert(make_pair(key_, mapped_type()))).first)).second;
 }
 
 template<typename key, typename T, typename Compare, typename Allocator>
