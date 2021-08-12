@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 13:03:22 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 15:16:32 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ class Tree
 		typedef ReverseIterator<iterator>		reverse_iterator;
 		typedef ReverseIterator<const_iterator>	const_reverse_iterator;
 
-		Tree();
+		Tree(const compare_keys &compare = compare_keys(),
+			const allocator_type &allocator = allocator_type());
 		Tree(const Tree &source);
 		~Tree();
 	
@@ -90,7 +91,8 @@ class Tree
 		node_type				*Find(const data_type &data);
 		node_type				*Find(node_type *node, const data_type &data);
 		void					Print();
-		size_type				Size();
+		size_type				Size() const;
+		allocator_type			get_allocator() const;
 	private:
 		void		Print(node_type *node);
 		void		PrintWidth(node_type *node);
@@ -114,8 +116,10 @@ class Tree
 template<typename Data, typename Key_from_data,
 	typename Compare, typename Allocator>
 Tree<Data, Key_from_data, Compare, Allocator>::
-Tree()
+Tree(const compare_keys &compare,const allocator_type &allocator) 
 {
+	_compare = compare;
+	_allocator = allocator;
 	_size = 0;
 	_tree = NULL;
 	_end = NULL;
@@ -397,7 +401,7 @@ template<typename Data, typename Key_from_data,
 	typename Compare, typename Allocator>
 typename Tree<Data, Key_from_data, Compare, Allocator>::size_type
 Tree<Data, Key_from_data, Compare, Allocator>::
-Size()
+Size() const
 {
 	return _size;
 }
@@ -409,6 +413,15 @@ FreeNode(node_type *node)
 {
 	_allocator.destroy(node);
 	_allocator.deallocate(node, sizeof(node));
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+typename Tree<Data, Key_from_data, Compare, Allocator>::allocator_type
+Tree<Data, Key_from_data, Compare, Allocator>::
+get_allocator() const
+{
+	return _allocator;
 }
 
 } // namespace ft
