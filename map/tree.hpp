@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 18:48:20 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 12:06:53 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <cstdlib>
 # include <functional>
 # include <memory>
-# include <queue>
 # include <iostream>
 # include "map_iterator.hpp"
 
@@ -63,6 +62,7 @@ class Tree
 		typedef Compare							compare_keys;
 		typedef Node<data_type>					node_type;
 		typedef	TreeBounds<node_type>			tree_bounds;
+		typedef const TreeBounds<node_type>		const_tree_bounds;
 		typedef typename Allocator::template rebind<node_type>::other
 												allocator_type;
 		typedef MapIterator<node_type>			iterator;
@@ -75,16 +75,17 @@ class Tree
 	
 		Tree	&operator=(const Tree &source);
 
-		iterator	begin();
-		iterator	end();
-		// TODO add const and reverse
-		void		Add(const data_type &data);
-		void		Delete(const data_type &data);
-		node_type	*Find(const data_type &data);
-		node_type	*Find(node_type *node, const data_type &data);
-		void		Print();
-		void		PrintWidth();
-		size_type	Size();
+		iterator		begin();
+		const_iterator	begin() const;
+		iterator		end();
+		const_iterator	end() const;
+		// TODO and reverse
+		void			Add(const data_type &data);
+		void			Delete(const data_type &data);
+		node_type		*Find(const data_type &data);
+		node_type		*Find(node_type *node, const data_type &data);
+		void			Print();
+		size_type		Size();
 
 		void	PrintMinMax()
 		{
@@ -118,6 +119,7 @@ Tree()
 {
 	_size = 0;
 	_tree = NULL;
+	_end = NULL;
 }
 
 template<typename Data, typename Key_from_data,
@@ -154,11 +156,15 @@ Tree<Data, Key_from_data, Compare, Allocator>
 &Tree<Data, Key_from_data, Compare, Allocator>::
 operator=(const Tree &source)
 {
-	// TODO
-	// do when iterators
-	// Destroy(_tree);
-	// 
-	// return *this;
+	if (this == &source)
+		return *this;
+	Destroy(_tree);
+	_size = 0;
+	_tree = NULL;
+	for (Tree<Data, Key_from_data, Compare, Allocator>::const_iterator it = source.begin();
+		it != source.end(); ++it)
+		Add(*it);
+	return *this;
 }
 
 template<typename Data, typename Key_from_data,
@@ -169,8 +175,18 @@ begin()
 {
 	if (_tree != NULL)
 		return iterator(_min_max_nodes.smallest, _end, &_min_max_nodes);
-		// return _min_max_nodes.smallest;
 	return iterator(_end, _end, &_min_max_nodes);
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+typename Tree<Data, Key_from_data, Compare, Allocator>::const_iterator
+	Tree<Data, Key_from_data, Compare, Allocator>::
+begin() const
+{
+	if (_tree != NULL)
+		return const_iterator(_min_max_nodes.smallest, _end, &_min_max_nodes);
+	return const_iterator(_end, _end, &_min_max_nodes);
 }
 
 template<typename Data, typename Key_from_data,
@@ -180,6 +196,15 @@ typename Tree<Data, Key_from_data, Compare, Allocator>::iterator
 end()
 {
 	return iterator(_end, _end, &_min_max_nodes);
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+typename Tree<Data, Key_from_data, Compare, Allocator>::const_iterator
+	Tree<Data, Key_from_data, Compare, Allocator>::
+end() const
+{
+	return const_iterator(_end, _end, &_min_max_nodes);
 }
 
 template<typename Data, typename Key_from_data,
@@ -331,41 +356,6 @@ Print(node_type *node)
 	else
 		std::cout << "root" << std::endl;
 	Print(node->rigth);
-}
-
-template<typename Data, typename Key_from_data,
-	typename Compare, typename Allocator>
-void	Tree<Data, Key_from_data, Compare, Allocator>::
-PrintWidth()
-{
-	PrintWidth(_tree);
-}
-
-template<typename Data, typename Key_from_data,
-	typename Compare, typename Allocator>
-void	Tree<Data, Key_from_data, Compare, Allocator>::
-PrintWidth(node_type *node)
-{
-	if (node == NULL)
-		return;
-	std::queue<node_type*>	queue;
-	size_t							size;
-
-	queue.push(node);
-	while (!queue.empty())
-	{
-		size = queue.size();
-		for (size_t i = 0; i < size; ++i)
-		{
-			std::cout << queue.front()->data << ' ';
-			if (queue.front()->left)
-				queue.push(queue.front()->left);
-			if (queue.front()->rigth)
-				queue.push(queue.front()->rigth);
-			queue.pop();
-		}
-		std::cout << std::endl;
-	}
 }
 
 template<typename Data, typename Key_from_data,

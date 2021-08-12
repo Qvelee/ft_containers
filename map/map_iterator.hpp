@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:10:59 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/11 20:20:32 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/12 12:06:45 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,28 +41,32 @@ class MapIterator
 {
 	public:
 		typedef typename conditional<IsConst, const T, T>::type	conditional_t;
-		typedef conditional_t						value_type;
-		typedef typename conditional_t::data_type	data_type;
-		typedef conditional_t*						pointer;
-		typedef conditional_t&						reference;
-		typedef bidirectional_iterator_tag			iterator_category;
-		typedef std::ptrdiff_t						difference_type;
-		typedef TreeBounds<conditional_t>			tree_bounds;
+		typedef conditional_t							value_type;
+		// typedef typename conditional_t::data_type	data_type;
+		typedef typename conditional<IsConst, const typename conditional_t::data_type,
+			typename conditional_t::data_type>::type	data_type;
+		typedef conditional_t*							pointer;
+		typedef conditional_t&							reference;
+		typedef bidirectional_iterator_tag				iterator_category;
+		typedef std::ptrdiff_t							difference_type;
+		typedef typename conditional<IsConst, const TreeBounds<T>,
+			TreeBounds<T> >::type						tree_bounds;
+		// typedef TreeBounds<conditional_t>				tree_bounds;
 
 		MapIterator();
 		MapIterator(conditional_t *node,  conditional_t *end, tree_bounds *min_max_nodes);
 		MapIterator(const MapIterator &source);
 		~MapIterator();
 
-		MapIterator	&operator=(const MapIterator &source);
-		bool		operator==(const MapIterator &right) const;
-		bool		operator!=(const MapIterator &right) const;
-		data_type	&operator*();
-		data_type	*operator->();
-		MapIterator	&operator++();
-		MapIterator	operator++(int);
-		MapIterator	&operator--();
-		MapIterator	operator--(int);
+		MapIterator		&operator=(const MapIterator &source);
+		bool			operator==(const MapIterator &right) const;
+		bool			operator!=(const MapIterator &right) const;
+		data_type		&operator*();
+		data_type		*operator->();
+		MapIterator		&operator++();
+		MapIterator		operator++(int);
+		MapIterator		&operator--();
+		MapIterator		operator--(int);
 		operator MapIterator<T, true>();
 	private:
 		conditional_t	*_node;
@@ -94,8 +98,11 @@ template<typename T, bool IsConst>
 MapIterator<T, IsConst>	&MapIterator<T, IsConst>::
 operator=(const MapIterator &source)
 {
+	if (this == &source)
+		return *this;
 	_node = source._node;
 	_min_max_nodes = source._min_max_nodes;
+	_end = source._end;
 	return *this;
 }
 
