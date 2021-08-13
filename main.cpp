@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:39:51 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/13 12:18:31 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/13 13:10:54 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -520,6 +520,46 @@ void	TestMap()
 	TestMoreMap();
 }
 
+void	TestComparsion()
+{
+	print_step("Test comparsion");
+	ft::vector<int>		vec;
+
+	vec.push_back(1);
+
+	ft::vector<int>::iterator		it = vec.begin();
+	ft::vector<int>::const_iterator	itc = vec.begin();
+	
+	std::cout << (it == itc) << std::endl;
+	std::cout << (it != itc) << std::endl;
+	std::cout << (it < itc) << std::endl;
+	std::cout << (it > itc) << std::endl;
+	std::cout << (it <= itc) << std::endl;
+	std::cout << (it >= itc) << std::endl;
+	std::cout << (itc == it) << std::endl;
+	std::cout << (itc != it) << std::endl;
+	std::cout << (itc < it) << std::endl;
+	std::cout << (itc > it) << std::endl;
+	std::cout << (itc <= it) << std::endl;
+	std::cout << (itc >= it) << std::endl;
+
+	ft::vector<int>::reverse_iterator		rit = vec.rend();
+	ft::vector<int>::const_reverse_iterator	ritc = vec.rend();
+
+	std::cout << (rit == ritc) << std::endl;
+	std::cout << (rit != ritc) << std::endl;
+	std::cout << (rit < ritc) << std::endl;
+	std::cout << (rit > ritc) << std::endl;
+	std::cout << (rit <= ritc) << std::endl;
+	std::cout << (rit >= ritc) << std::endl;
+	std::cout << (ritc == rit) << std::endl;
+	std::cout << (ritc != rit) << std::endl;
+	std::cout << (ritc < rit) << std::endl;
+	std::cout << (ritc > rit) << std::endl;
+	std::cout << (ritc <= rit) << std::endl;
+	std::cout << (ritc >= rit) << std::endl;
+}
+
 int		main(int argc, char **argv)
 {
 	hello();
@@ -531,6 +571,7 @@ int		main(int argc, char **argv)
 	std::string	arg = std::string(argv[1]);
 	if (arg == "vector")
 	{
+		TestComparsion();
 		TestDefaultConstructor();
 		TestFillConstructor();
 		TestRangeConstructor();
