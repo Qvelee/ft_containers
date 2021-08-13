@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:39:51 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/10 11:30:41 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/13 11:32:18 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include "vector.hpp"
 # include "stack.hpp"
+# include "map.hpp"
 
 #ifndef MODE
 #define MODE 0
@@ -31,9 +32,15 @@
 #if MODE
 	using std::vector;
 	using std::swap;
+	using std::map;
+	using std::pair;
+	using std::make_pair;
 #else
 	using ft::vector;
 	using ft::swap;
+	using ft::map;
+	using ft::pair;
+	using ft::make_pair;
 #endif
 
 using std::cout;
@@ -353,6 +360,166 @@ void	hello()
 	sleep(1);
 }
 
+void	TestMoreMap()
+{
+	map<int, int>	map1;
+	
+	print_step("Testing lower upper bounds, equal");
+	int		array[] = { 10, 7, 3, 8, 1, 5, 4, 6, 20, 15, 25, 13, 17, 16, 30, 29, 35 };
+// 
+	std::cout << "Size: " << map1.size() << std::endl;
+	for (size_t i = 0; i < sizeof(array) / sizeof(array[0]); ++i)
+		map1.insert(make_pair(array[i], array[i]));
+	std::cout << "Size: " << map1.size() << std::endl;
+
+	map<int, int>::iterator itlower = map1.lower_bound(5);
+	map<int, int>::const_iterator itlowerconst = map1.lower_bound(5);
+	std::cout << itlower->first << std::endl;
+	std::cout << itlowerconst->first << std::endl;
+	std::cout << "----------\n";
+
+	map<int, int>::iterator itupper = map1.upper_bound(35);
+	map<int, int>::const_iterator itupperconst = map1.lower_bound(20);
+	if (itupper == map1.end())
+		std::cout << "No element upper 35\n";
+	std::cout << itupperconst->first << std::endl;
+	std::cout << "----------\n";
+
+	pair<map<int, int>::iterator, map<int, int>::iterator>	range = map1.equal_range(6);
+	std::cout << range.first->first << ' ';
+	std::cout << range.second->first << std::endl;
+	std::cout << "----------\n";
+
+	print_step("Testing key and value compare");
+	map<int, int>::key_compare comp = map1.key_comp();
+
+	for (map<int, int>::iterator it = map1.begin(); it != map1.end(); ++it)
+		if (!comp(it->first, 10))
+			std::cout << it->first << ' ';
+	std::cout << std::endl;
+
+	map<int, int>::value_compare val_comp = map1.value_comp();
+	for (map<int, int>::iterator it = map1.begin(); it != map1.end(); ++it)
+		if (!val_comp(*it, make_pair(10, 10)))
+			std::cout << it->first << ' ';
+	std::cout << std::endl;
+}
+
+void	TestMap()
+{
+	map<int, int>	mymap;
+	
+	print_step("Testing insert");
+	std::cout << mymap.size() << std::endl;
+	
+	map<int, int>::iterator it = mymap.insert(make_pair(10, 10)).first;
+
+	std::cout << mymap.insert(make_pair(10, 10)).second << std::endl;
+	std::cout << it->first << std::endl;
+	std::cout << it->second << std::endl;
+	std::cout << "size: " << mymap.size() << std::endl;
+
+	std::cout << mymap.insert(it, make_pair(30, 30))->first << std::endl;
+	std::cout << "size: " << mymap.size() << std::endl;
+
+	for (map<int, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+	{
+		std::cout << "first: " << it->first;
+		std::cout << " second: " << it->second << std::endl;
+	}
+	std::cout << "----\n";
+
+	map<int, int>	map2;
+	map2.insert(make_pair(100, 100));
+	map2.insert(make_pair(50, 50));
+	mymap.insert(map2.begin(), map2.end());
+
+	for (map<int, int>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
+	{
+		std::cout << "first: " << it->first;
+		std::cout << " second: " << it->second << std::endl;
+	}
+	std::cout << "----\n";
+
+	print_step("Testing erase and iterators");
+	mymap.erase(mymap.begin());
+	for (map<int, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
+	{
+		std::cout << "first: " << it->first;
+		std::cout << " second: " << it->second << std::endl;
+	}
+	std::cout << "----\n";
+
+	mymap.erase(mymap.begin(), --mymap.end());
+	for (map<int, int>::const_reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
+	{
+		std::cout << "first: " << it->first;
+		std::cout << " second: " << it->second << std::endl;
+	}
+	std::cout << "----\n";
+
+ 	std::cout << "Deleted: " << mymap.erase(100) << std::endl;
+ 	std::cout << "Deleted: " << mymap.erase(1010) << std::endl;
+	for (map<int, int>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
+	{
+		std::cout << "first: " << it->first;
+		std::cout << " second: " << it->second << std::endl;
+	}
+	std::cout << "----\n";
+	
+	print_step("Testing swap & clear");
+	mymap.swap(map2);
+	for (map<int, int>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
+	{
+		std::cout << "first: " << it->first;
+		std::cout << " second: " << it->second << std::endl;
+	}
+	std::cout << "----\n";
+	for (map<int, int>::const_iterator it = map2.begin(); it != map2.end(); ++it)
+	{
+		std::cout << "first: " << it->first;
+		std::cout << " second: " << it->second << std::endl;
+	}
+	std::cout << "----\n";
+
+	mymap.clear();
+	std::cout << "size: " << mymap.size() << std::endl;
+	for (map<int, int>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
+	{
+		std::cout << "first: " << it->first;
+		std::cout << " second: " << it->second << std::endl;
+	}
+	std::cout << "----\n";
+
+	print_step("Testing find & count");
+	map2.insert(make_pair(200, 200));
+	map2.insert(make_pair(400, 400));
+	std::cout << map2.find(200)->first << std::endl;
+	if (map2.find(10000) == map2.end())
+		std::cout << "No element 10000\n";
+	std::cout << "----\n";
+	
+	map<int, int>::const_iterator	it3 = map2.find(111);
+	if (it3 == map2.end())
+		std::cout << "No element 111\n";
+	std::cout << "----\n";
+	
+	if (map2.count(200))
+		std::cout << "200 found\n";
+	if (map2.count(333))
+		std::cout << "333 found\n";
+	std::cout << "----\n";
+
+	print_step("Testing []");
+	std::cout << map2[200] << std::endl;
+	std::cout << map2[123] << std::endl;
+	map2[123] = 123;
+	std::cout << map2[123] << std::endl;
+	std::cout << "----\n";
+
+	TestMoreMap();
+}
+
 int		main(int argc, char **argv)
 {
 	hello();
@@ -376,6 +543,10 @@ int		main(int argc, char **argv)
 	if (arg == "stack")
 	{
 		TestStack();
+	}
+	if (arg == "map")
+	{
+		TestMap();
 	}
 	return 0;
 }
