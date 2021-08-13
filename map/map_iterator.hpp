@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:10:59 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/13 11:16:24 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/13 13:25:07 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ class MapIterator
 		MapIterator		&operator--();
 		MapIterator		operator--(int);
 		operator MapIterator<T, true>();
+		operator MapIterator<T, true>() const;
 	private:
 		conditional_t	*_node;
 		conditional_t	*_end;
@@ -199,6 +200,28 @@ MapIterator<T, IsConst>::
 operator MapIterator<T, true>()
 {
 	return MapIterator<T, true>(_node, _end, _min_max_nodes);
+}
+
+template<typename T, bool IsConst>
+MapIterator<T, IsConst>::
+operator MapIterator<T, true>() const
+{
+	return MapIterator<T, true>(_node, _end, _min_max_nodes);
+}
+
+template<typename T>
+bool
+operator==(const MapIterator<T, false> &left, const MapIterator<T, true> &right)
+{
+	return right.operator==(left);
+}
+
+
+template<typename T>
+bool
+operator!=(const MapIterator<T, false> &left, const MapIterator<T, true> &right)
+{
+	return right.operator!=(left);
 }
 
 } // namespace ft

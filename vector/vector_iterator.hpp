@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 16:04:34 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/13 12:48:55 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/13 13:20:11 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,42 +252,42 @@ operator+(int n, const VectorIterator<T, IsConst> &right) // non-memer operator+
 
 template<typename T>
 bool
-operator==(const VectorIterator<T, false> left, const VectorIterator<T, true> &right)
+operator==(const VectorIterator<T, false> &left, const VectorIterator<T, true> &right)
 {
 	return right.operator==(left);
 }
 
 template<typename T>
 bool
-operator!=(const VectorIterator<T, false> left, const VectorIterator<T, true> &right)
+operator!=(const VectorIterator<T, false> &left, const VectorIterator<T, true> &right)
 {
 	return right.operator!=(left);
 }
 
 template<typename T>
 bool
-operator<(const VectorIterator<T, false> left, const VectorIterator<T, true> &right)
+operator<(const VectorIterator<T, false> &left, const VectorIterator<T, true> &right)
 {
 	return right.operator<(left);
 }
 
 template<typename T>
 bool
-operator>(const VectorIterator<T, false> left, const VectorIterator<T, true> &right)
+operator>(const VectorIterator<T, false> &left, const VectorIterator<T, true> &right)
 {
 	return right.operator>(left);
 }
 
 template<typename T>
 bool
-operator<=(const VectorIterator<T, false> left, const VectorIterator<T, true> &right)
+operator<=(const VectorIterator<T, false> &left, const VectorIterator<T, true> &right)
 {
 	return right.operator<=(left);
 }
 
 template<typename T>
 bool
-operator>=(const VectorIterator<T, false> left, const VectorIterator<T, true> &right)
+operator>=(const VectorIterator<T, false> &left, const VectorIterator<T, true> &right)
 {
 	return right.operator>=(left);
 }
