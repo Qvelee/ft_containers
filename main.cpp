@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:39:51 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/13 11:32:18 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/13 11:53:51 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -366,7 +366,7 @@ void	TestMoreMap()
 	
 	print_step("Testing lower upper bounds, equal");
 	int		array[] = { 10, 7, 3, 8, 1, 5, 4, 6, 20, 15, 25, 13, 17, 16, 30, 29, 35 };
-// 
+ 
 	std::cout << "Size: " << map1.size() << std::endl;
 	for (size_t i = 0; i < sizeof(array) / sizeof(array[0]); ++i)
 		map1.insert(make_pair(array[i], array[i]));
