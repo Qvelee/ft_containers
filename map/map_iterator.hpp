@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:10:59 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/13 13:25:07 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/13 13:36:48 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,6 @@ operator==(const MapIterator<T, false> &left, const MapIterator<T, true> &right)
 {
 	return right.operator==(left);
 }
-
 
 template<typename T>
 bool
