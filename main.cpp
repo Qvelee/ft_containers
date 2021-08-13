@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:39:51 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/13 14:39:30 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/13 15:34:05 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,20 +133,25 @@ void	TestMap()
 	}
 	std::cout << "----\n";
 
-	map<int, int>	map2;
-	map2.insert(make_pair(100, 100));
-	map2.insert(make_pair(50, 50));
-	mymap.insert(map2.begin(), map2.end());
+	map<int, int>			map2;
 
+	map2.insert(make_pair(20, 20));
+	map2.insert(make_pair(50, 50));
+	map<int, int>::iterator	it_mymap = ++mymap.begin();
+	std::cout << it_mymap->first << std::endl;
+
+	mymap.insert(map2.begin(), map2.end());
 	for (map<int, int>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
 	{
 		std::cout << "first: " << it->first;
 		std::cout << " second: " << it->second << std::endl;
 	}
+	std::cout << it_mymap->first << std::endl;
 	std::cout << "----\n";
 
 	print_step("Testing erase and iterators");
 	mymap.erase(mymap.begin());
+	std::cout << it_mymap->first << std::endl;
 	for (map<int, int>::reverse_iterator it = mymap.rbegin(); it != mymap.rend(); ++it)
 	{
 		std::cout << "first: " << it->first;
@@ -162,7 +167,7 @@ void	TestMap()
 	}
 	std::cout << "----\n";
 
- 	std::cout << "Deleted: " << mymap.erase(100) << std::endl;
+	std::cout << "Deleted: " << mymap.erase(100) << std::endl;
  	std::cout << "Deleted: " << mymap.erase(1010) << std::endl;
 	for (map<int, int>::const_iterator it = mymap.begin(); it != mymap.end(); ++it)
 	{
