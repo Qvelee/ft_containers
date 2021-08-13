@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 16:04:34 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/13 11:57:41 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/13 12:48:55 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ class VectorIterator
 		VectorIterator		&operator-=(int value);
 		reference			operator[](int index);
 		operator VectorIterator<T, true>();
+		operator VectorIterator<T, true>() const;
 	private:
 		conditional_t	*_pointer;
 };
@@ -235,11 +236,60 @@ operator VectorIterator<T, true>()
 }
 
 template<typename T, bool IsConst>
+VectorIterator<T, IsConst>::
+operator VectorIterator<T, true>() const
+{
+	return VectorIterator<T, true>(_pointer);
+}
+
+template<typename T, bool IsConst>
 VectorIterator<T, IsConst>
 operator+(int n, const VectorIterator<T, IsConst> &right) // non-memer operator+
 {
 	return right + n;
 	// here default constructor (VectorIterator(T* pointer) will be called)
+}
+
+template<typename T>
+bool
+operator==(const VectorIterator<T, false> left, const VectorIterator<T, true> &right)
+{
+	return right.operator==(left);
+}
+
+template<typename T>
+bool
+operator!=(const VectorIterator<T, false> left, const VectorIterator<T, true> &right)
+{
+	return right.operator!=(left);
+}
+
+template<typename T>
+bool
+operator<(const VectorIterator<T, false> left, const VectorIterator<T, true> &right)
+{
+	return right.operator<(left);
+}
+
+template<typename T>
+bool
+operator>(const VectorIterator<T, false> left, const VectorIterator<T, true> &right)
+{
+	return right.operator>(left);
+}
+
+template<typename T>
+bool
+operator<=(const VectorIterator<T, false> left, const VectorIterator<T, true> &right)
+{
+	return right.operator<=(left);
+}
+
+template<typename T>
+bool
+operator>=(const VectorIterator<T, false> left, const VectorIterator<T, true> &right)
+{
+	return right.operator>=(left);
 }
 
 } // namespace ft

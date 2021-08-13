@@ -178,10 +178,10 @@ operator[](ReverseIterator<I>::difference_type index) const
 
 // NON_MEMBER FUNCTIONS
 
-template<typename Iterator>
+template<typename Iterator1, typename Iterator2>
 bool
-operator==(const ReverseIterator<Iterator> &left,\
-	const ReverseIterator<Iterator> &right)
+operator==(const ReverseIterator<Iterator1> &left,\
+	const ReverseIterator<Iterator2> &right)
 {
 	return left.base() == right.base();
 }
