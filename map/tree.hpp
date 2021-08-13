@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/13 11:16:11 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/13 14:36:21 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ struct TreeBounds
 template<typename T>
 struct Node
 {
+	Node() : data(T()), parent(NULL), left(NULL), rigth(NULL) { }
 	Node(const T &data_, Node *parent_) : data(data_), parent(parent_),
 		left(NULL), rigth(NULL) { }
 	Node(const Node &source) : data(source.data), parent(source.parent),
@@ -64,9 +65,6 @@ struct Node
 	Node	*parent;
 	Node	*left;
 	Node	*rigth;
-
-	private:
-		Node() { }
 };
 
 template<typename Data, typename Key_from_data,
@@ -115,6 +113,10 @@ class Tree
 		const_iterator			lower_bound(const data_type &data) const;
 		iterator				upper_bound(const data_type &data);
 		const_iterator			upper_bound(const data_type &data) const;
+		pair<iterator, iterator>
+								equal_range(const data_type &data);
+		pair<const_iterator, const_iterator>
+								equal_range(const data_type &data) const;
 		allocator_type			get_allocator() const;
 	private:
 		void		Print(node_type *node);
@@ -132,6 +134,7 @@ class Tree
 		node_type		*_tree;
 		tree_bounds		_min_max_nodes;
 		node_type		*_end;
+		node_type		_empty_node;
 		allocator_type	_allocator;
 		compare_keys	_compare;
 		get_key			_get_key;
@@ -541,6 +544,46 @@ upper_bound(const data_type &data) const
 		if (!_compare(_get_key(data), _get_key(*it)))
 			break ;
 	return it;
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+pair<typename Tree<Data, Key_from_data, Compare, Allocator>::iterator,
+	typename Tree<Data, Key_from_data, Compare, Allocator>::iterator>
+Tree<Data, Key_from_data, Compare, Allocator>::
+equal_range(const data_type &data)
+{
+	iterator	it_upper = upper_bound(data);
+	iterator	it_lower = lower_bound(data);
+
+	if (it_upper == end())
+		it_upper = it_lower;
+	if (it_lower == end())
+	{		
+		it_lower = iterator(&_empty_node, _end, &_min_max_nodes);
+		it_upper = it_lower;
+	}
+	return make_pair(it_lower, it_upper);
+}
+
+template<typename Data, typename Key_from_data,
+	typename Compare, typename Allocator>
+pair<typename Tree<Data, Key_from_data, Compare, Allocator>::const_iterator,
+	typename Tree<Data, Key_from_data, Compare, Allocator>::const_iterator>
+Tree<Data, Key_from_data, Compare, Allocator>::
+equal_range(const data_type &data) const
+{
+	const_iterator	it_upper = upper_bound(data);
+	const_iterator	it_lower = lower_bound(data);
+
+	if (it_upper == end())
+		it_upper = it_lower;
+	if (it_lower == end())
+	{		
+		it_lower = const_iterator(&_empty_node, _end, &_min_max_nodes);
+		it_upper = it_lower;
+	}
+	return make_pair(it_lower, it_upper);
 }
 
 template<typename Data, typename Key_from_data,
