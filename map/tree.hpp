@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/13 14:36:21 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/13 15:32:31 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -475,7 +475,7 @@ swap(Tree &source)
 	_size ^= source._size; // XOR swap
 	source._size ^= _size;
 	_size ^= source._size;
-	temp_bounds = source._min_max_nodes;
+	temp_bounds = _min_max_nodes;
 	_min_max_nodes = source._min_max_nodes;
 	source._min_max_nodes = temp_bounds;
 }
