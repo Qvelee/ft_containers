@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/09 12:20:00 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/12 20:28:09 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/13 11:16:11 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@
 
 namespace ft
 {
+
+template<typename T, bool IsConst = false>
+class MapIterator;
+
+template<typename Iterator>
+class ReverseIterator;
 
 template<typename T>
 struct TreeBounds
@@ -134,13 +140,11 @@ class Tree
 template<typename Data, typename Key_from_data,
 	typename Compare, typename Allocator>
 Tree<Data, Key_from_data, Compare, Allocator>::
-Tree(const compare_keys &compare,const allocator_type &allocator) 
+Tree(const compare_keys &compare,const allocator_type &allocator) :
+	_size(0), _tree(NULL), _end(NULL)
 {
 	_compare = compare;
 	_allocator = allocator;
-	_size = 0;
-	_tree = NULL;
-	_end = NULL;
 }
 
 template<typename Data, typename Key_from_data,
