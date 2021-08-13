@@ -6,7 +6,7 @@
 /*   By: nelisabe <nelisabe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:39:51 by nelisabe          #+#    #+#             */
-/*   Updated: 2021/08/13 11:53:51 by nelisabe         ###   ########.fr       */
+/*   Updated: 2021/08/13 12:18:31 by nelisabe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -539,14 +539,13 @@ int		main(int argc, char **argv)
 		TestElementsMemory();
 		TestOther();
 		TestOperators();
-	}
-	if (arg == "stack")
+	} else if (arg == "stack")
 	{
 		TestStack();
-	}
-	if (arg == "map")
+	} else if (arg == "map")
 	{
 		TestMap();
-	}
+	} else
+		std::cerr << "Not valid input\n" << std::endl;
 	return 0;
 }
