@@ -1,2 +1,0 @@
-change init in all constructors
-add this == source
