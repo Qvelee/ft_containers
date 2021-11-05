@@ -8,6 +8,7 @@ Goal of this project was to implement behavior of C++ STL containers vector (Arr
 
 Run `make` to create tester executable **containers**.
 Tester has 2 modes:
+
 0) Running tests for written containers;
 1) Running same tests for STL containers.
 
